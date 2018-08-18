@@ -1,0 +1,18 @@
+{
+  "name": "js13k",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "serve": "rollup -c --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^0.64.1",
+    "rollup-plugin-browsersync": "^0.2.6",
+    "rollup-plugin-copy": "^0.2.3",
+    "rollup-plugin-visualizer": "^0.9.0"
+  }
+}
