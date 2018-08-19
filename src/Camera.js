@@ -4,7 +4,7 @@ const AR = 0.03;
 export default class Camera {
   constructor() {
     this.x = 100;
-    this.y = 10;
+    this.y = -110;
     this.vx = 0;
     this.vy = 0;
     this.vr = 0;
@@ -12,7 +12,7 @@ export default class Camera {
     this.zoom = 1;
   }
 
-  update(pressingKeys) {
+  update(pressingKeys, planet, monolith) {
     const theta = (this.rotaion * Math.PI) / 180;
 
     if (pressingKeys[37]) {
@@ -35,10 +35,36 @@ export default class Camera {
       this.zoom = 1;
     }
 
+    const isCollided = this.collision(planet, monolith);
+    if(isCollided) {
+      this.x -= this.vx;
+      this.y -= this.vy;
+      this.vx *= -planet.elasticity;
+      this.vy *= -planet.elasticity;
+    }
+
     this.x += this.vx;
     this.y += this.vy;
     this.rotaion += this.vr;
     this.rotaion %= 360;
+  }
+
+  collision(planet, monolith) {
+    const { _x: cx, _y: cy, _radius: radius } = planet;
+    const { _x: rx, _y: ry, _width: rw, _height: rh } = monolith;
+    let testX = cx;
+    let testY = cy;
+
+    if (cx < rx) testX = rx;
+    else if (cx > rx + rw) testX = rx + rw;
+    if (cy < ry) testY = ry;
+    else if (cy > ry + rh) testY = ry + rh;
+
+    const distX = cx - testX;
+    const distY = cy - testY;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+
+    return distance <= radius;
   }
 
   transform(point) {

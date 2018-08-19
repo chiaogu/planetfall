@@ -17,7 +17,7 @@ const draw = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  camera.update(pressingKeys);
+  camera.update(pressingKeys, planet, monolith);
   // background.render(context, camera);
   planet.render(context, camera);
   monolith.render(context, camera);
