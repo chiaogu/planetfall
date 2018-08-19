@@ -5,12 +5,10 @@ export default class Planet {
     this.y = 100;
   }
   render(context, camera) {
-    context.strokeStyle = '#000';
-
-    const x = camera.width / 2 - camera.x + this.x;
-    const y = camera.height / 2 - camera.y + this.y;
+    context.fillStyle = "#fff";
+    const { x, y } = camera.transform(this);
     context.beginPath();
     context.arc(x, y, this.radius, 0, 2 * Math.PI);
-    context.stroke();
+    context.fill();
   }
 }

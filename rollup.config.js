@@ -12,7 +12,7 @@ export default ({ watch }) => ({
     copy({
       "src/index.html": "dist/index.html"
     }),
-    minify(),
+    // minify(),
     watch
       ? browsersync({
           server: "dist",
