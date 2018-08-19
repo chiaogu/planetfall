@@ -1,22 +1,26 @@
-import copy from 'rollup-plugin-copy';
-import visualizer from 'rollup-plugin-visualizer';
-import browsersync from 'rollup-plugin-browsersync';
+import copy from "rollup-plugin-copy";
+import browsersync from "rollup-plugin-browsersync";
+import minify from 'rollup-plugin-babel-minify';
 
-export default {
+export default ({ watch }) => ({
   input: "src/index.js",
   output: {
-    file: "dist/bundle.js",
-    format: "iife",
-    name: "hi"
+    file: "dist/b.js",
+    format: "iife"
   },
   plugins: [
     copy({
       "src/index.html": "dist/index.html"
     }),
-    visualizer(),
-    browsersync({server: 'dist'})
+    minify(),
+    watch
+      ? browsersync({
+          server: "dist",
+          open: false
+        })
+      : {}
   ],
   watch: {
-    include: 'src/**'
+    include: "src/**"
   }
-};
+});
