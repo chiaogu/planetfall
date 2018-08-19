@@ -1,6 +1,6 @@
 export default class Planet {
   constructor() {
-    this.radius = 100;
+    this.radius = 200;
     this.x = 100;
     this.y = 100;
   }
@@ -8,7 +8,7 @@ export default class Planet {
     context.fillStyle = "#fff";
     const { x, y } = camera.transform(this);
     context.beginPath();
-    context.arc(x, y, this.radius, 0, 2 * Math.PI);
+    context.arc(x, y, this.radius * camera.zoom, 0, 2 * Math.PI);
     context.fill();
   }
 }

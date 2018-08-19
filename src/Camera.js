@@ -1,16 +1,15 @@
-const A = 0.1;
-const AR = 0.05;
+const A = 0.01;
+const AR = 0.03;
 
 export default class Camera {
   constructor() {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
     this.x = 100;
     this.y = 10;
     this.vx = 0;
     this.vy = 0;
     this.vr = 0;
     this.rotaion = 0;
+    this.zoom = 1;
   }
 
   update(pressingKeys) {
@@ -21,20 +20,19 @@ export default class Camera {
     }
     if (pressingKeys[39]) {
       this.vr -= AR;
-
     }
     if (pressingKeys[38]) {
       this.vx -= A * Math.sin(theta);
       this.vy -= A * Math.cos(theta);
-
     }
     if (pressingKeys[40]) {
       this.vx += A * Math.sin(theta);
       this.vy += A * Math.cos(theta);
-
     }
     if (pressingKeys[32]) {
-
+      this.zoom = 10;
+    } else {
+      this.zoom = 1;
     }
 
     this.x += this.vx;
@@ -46,16 +44,16 @@ export default class Camera {
   transform(point) {
     const theta = (this.rotaion * Math.PI) / 180;
     let x =
-      (point.x - this.x) * Math.cos(theta) -
-      (point.y - this.y) * Math.sin(theta) +
+      (point.x - this.x) * Math.cos(theta) * this.zoom -
+      (point.y - this.y) * Math.sin(theta) * this.zoom +
       this.x;
-    x = this.width / 2 - this.x + x;
+    x = window.innerWidth / 2 - this.x + x;
 
     let y =
-      (point.x - this.x) * Math.sin(theta) +
-      (point.y - this.y) * Math.cos(theta) +
+      (point.x - this.x) * Math.sin(theta) * this.zoom +
+      (point.y - this.y) * Math.cos(theta) * this.zoom +
       this.y;
-    y = this.height / 2 - this.y + y;
+    y = window.innerHeight / 2 - this.y + y;
 
     return { x, y };
   }
