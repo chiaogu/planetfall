@@ -13,7 +13,34 @@ export default class Camera {
   }
 
   update(pressingKeys, planet, monolith) {
-    const theta = (this.rotaion * Math.PI) / 180;
+    const cameraTheta = (this.rotaion * Math.PI) / 180;
+
+    if (planet) {
+
+      const isCollided = this.collision(planet, monolith);
+      if (isCollided) {
+        this.x -= this.vx;
+        this.y -= this.vy;
+        this.vx *= -planet.elasticity;
+        this.vy *= -planet.elasticity;
+        this.vr = 0;
+      } else {
+        const gravityTheta = (this.findAngle(planet) * Math.PI) / 180;
+        this.vx += A * Math.sin(gravityTheta);
+        this.vy += A * Math.cos(gravityTheta);
+      }
+
+      if (pressingKeys[38]) {
+        this.vx = -0.5 * Math.sin(cameraTheta);
+        this.vy = -0.5 * Math.cos(cameraTheta);
+      }
+    } else {
+
+      if (pressingKeys[38]) {
+        this.vx -= A * Math.sin(cameraTheta);
+        this.vy -= A * Math.cos(cameraTheta);
+      }
+    }
 
     if (pressingKeys[37]) {
       this.vr += AR;
@@ -21,13 +48,9 @@ export default class Camera {
     if (pressingKeys[39]) {
       this.vr -= AR;
     }
-    if (pressingKeys[38]) {
-      this.vx -= A * Math.sin(theta);
-      this.vy -= A * Math.cos(theta);
-    }
     if (pressingKeys[40]) {
-      this.vx += A * Math.sin(theta);
-      this.vy += A * Math.cos(theta);
+      this.vx += A * Math.sin(cameraTheta);
+      this.vy += A * Math.cos(cameraTheta);
     }
     if (pressingKeys[32]) {
       this.zoom = 10;
@@ -35,21 +58,29 @@ export default class Camera {
       this.zoom = 1;
     }
 
-    const isCollided = this.collision(planet, monolith);
-    if(isCollided) {
-      this.x -= this.vx;
-      this.y -= this.vy;
-      this.vx *= -planet.elasticity;
-      this.vy *= -planet.elasticity;
-    }
-
     this.x += this.vx;
     this.y += this.vy;
     this.rotaion += this.vr;
     this.rotaion %= 360;
+    this.rotaion += this.rotaion < 0 ? 360 : 0;
+  }
+
+  findAngle(planet) {
+    const { x, y } = this;
+    const diff_x = planet.x - x;
+    const diff_y = planet.y - y;
+    let angle = (360 * Math.atan(diff_y / diff_x)) / (2 * Math.PI) - 90;
+    if(diff_x < 0) angle += 180;
+    else if(diff_y < 0) angle += 360;
+    else angle += 360;
+    return angle;
   }
 
   collision(planet, monolith) {
+    return this.distance(planet, monolith) <= 0;
+  }
+
+  distance(planet, monolith) {
     const { _x: cx, _y: cy, _radius: radius } = planet;
     const { _x: rx, _y: ry, _width: rw, _height: rh } = monolith;
     let testX = cx;
@@ -64,7 +95,7 @@ export default class Camera {
     const distY = cy - testY;
     const distance = Math.sqrt(distX * distX + distY * distY);
 
-    return distance <= radius;
+    return distance - radius;
   }
 
   transform(point) {

@@ -15,5 +15,17 @@ export default class Planet {
     context.beginPath();
     context.arc(x, y, this._radius, 0, 2 * Math.PI);
     context.fill();
+
+    const { x:nx, y:ny } = camera.transform({
+      x: this.x,
+      y: this.y - this.radius
+    });
+    context.fillStyle = "#fff";
+    context.fillText('N', nx, ny);
+
+    context.beginPath();
+    context.moveTo(x, y);
+    context.lineTo(nx, ny);
+    context.stroke();
   }
 }

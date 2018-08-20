@@ -17,7 +17,11 @@ const draw = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  camera.update(pressingKeys, planet, monolith);
+  let closetPlanet;
+  if(camera.distance(planet, monolith) < 200) {
+    closetPlanet = planet;
+  }
+  camera.update(pressingKeys, closetPlanet, monolith);
   // background.render(context, camera);
   planet.render(context, camera);
   monolith.render(context, camera);
