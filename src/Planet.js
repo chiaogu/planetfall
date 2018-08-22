@@ -1,8 +1,8 @@
 export default class Planet {
   constructor() {
-    this.radius = 200;
-    this.x = 100;
-    this.y = 100;
+    this.radius = 2000;
+    this.x = 0;
+    this.y = 2010;
     this.elasticity = 0.5;
   }
   render(context, camera) {

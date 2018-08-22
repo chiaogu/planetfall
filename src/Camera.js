@@ -3,63 +3,87 @@ const AR = 0.03;
 
 export default class Camera {
   constructor() {
-    this.x = 100;
-    this.y = -110;
+    this.x = 0;
+    this.y = 0;
     this.vx = 0;
     this.vy = 0;
     this.vr = 0;
     this.rotaion = 0;
     this.zoom = 1;
+    this.isJumping = false;
   }
 
   update(pressingKeys, planet, monolith) {
-    const cameraTheta = (this.rotaion * Math.PI) / 180;
-
     if (planet) {
-
-      const isCollided = this.collision(planet, monolith);
-      if (isCollided) {
-        this.x -= this.vx;
-        this.y -= this.vy;
-        this.vx *= -planet.elasticity;
-        this.vy *= -planet.elasticity;
-        this.vr = 0;
-      } else {
-        const gravityTheta = (this.findAngle(planet) * Math.PI) / 180;
-        this.vx += A * Math.sin(gravityTheta);
-        this.vy += A * Math.cos(gravityTheta);
-      }
-
-      if (pressingKeys[38]) {
-        this.vx = -0.5 * Math.sin(cameraTheta);
-        this.vy = -0.5 * Math.cos(cameraTheta);
-      }
+      this.updateOnPlanet(pressingKeys, planet, monolith);
     } else {
-
-      if (pressingKeys[38]) {
-        this.vx -= A * Math.sin(cameraTheta);
-        this.vy -= A * Math.cos(cameraTheta);
-      }
+      this.updateInSpace(pressingKeys);
     }
 
+    this.x += this.vx;
+    this.y += this.vy;
+  }
+
+  updateOnPlanet(pressingKeys, planet, monolith) {
+    const gravityAngle = this.findAngle(planet);
+    const gravityTheta = (gravityAngle * Math.PI) / 180;
+
+    const distance = this.distance(planet, monolith);
+    const isCollided = distance <= 0;
+    if (isCollided) {
+      this.isJumping = false;
+      this.x -= this.vx;
+      this.y -= this.vy;
+      this.vx = 0;
+      this.vy = 0;
+      this.vr = 0;
+    } else {
+      this.vx -= 0.05 * Math.sin(gravityTheta);
+      this.vy += 0.05 * Math.cos(gravityTheta);
+    }
+
+    if (pressingKeys[37]) {
+      this.vx -= 0.05 * Math.cos(gravityTheta);
+      this.vy -= 0.05 * Math.sin(gravityTheta);
+    }
+    if (pressingKeys[39]) {
+      this.vx += 0.05 * Math.cos(gravityTheta);
+      this.vy += 0.05 * Math.sin(gravityTheta);
+    }
+    if (pressingKeys[38] && !this.isJumping) {
+      this.isJumping = true;
+      this.vx += 1 * Math.sin(gravityTheta);
+      this.vy -= 1 * Math.cos(gravityTheta);
+    }
+    if (pressingKeys[40]) {
+      this.vx -= 0.1 * Math.sin(gravityTheta);
+      this.vy += 0.1 * Math.cos(gravityTheta);
+    }
+    if (pressingKeys[32]) {
+      this.zoom = 8;
+    } else {
+      this.zoom = 1;
+    }
+
+    this.rotaion = 360 - gravityAngle;
+  }
+
+  updateInSpace(pressingKeys) {
+    const cameraTheta = (this.rotaion * Math.PI) / 180;
     if (pressingKeys[37]) {
       this.vr += AR;
     }
     if (pressingKeys[39]) {
       this.vr -= AR;
     }
+    if (pressingKeys[38]) {
+      this.vx -= A * Math.sin(cameraTheta);
+      this.vy -= A * Math.cos(cameraTheta);
+    }
     if (pressingKeys[40]) {
       this.vx += A * Math.sin(cameraTheta);
       this.vy += A * Math.cos(cameraTheta);
     }
-    if (pressingKeys[32]) {
-      this.zoom = 10;
-    } else {
-      this.zoom = 1;
-    }
-
-    this.x += this.vx;
-    this.y += this.vy;
     this.rotaion += this.vr;
     this.rotaion %= 360;
     this.rotaion += this.rotaion < 0 ? 360 : 0;
@@ -70,8 +94,8 @@ export default class Camera {
     const diff_x = planet.x - x;
     const diff_y = planet.y - y;
     let angle = (360 * Math.atan(diff_y / diff_x)) / (2 * Math.PI) - 90;
-    if(diff_x < 0) angle += 180;
-    else if(diff_y < 0) angle += 360;
+    if (diff_x < 0) angle += 180;
+    else if (diff_y < 0) angle += 360;
     else angle += 360;
     return angle;
   }
