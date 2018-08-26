@@ -18,11 +18,11 @@ const draw = () => {
   canvas.height = window.innerHeight;
 
   let closetPlanet;
-  // if(camera.distance(planet, monolith) < 100) {
+  if(camera.distance(planet, monolith) < planet.radius / 2) {
     closetPlanet = planet;
-  // }
+  }
   camera.update(pressingKeys, closetPlanet, monolith);
-  // background.render(context, camera);
+  background.render(context, camera);
   planet.render(context, camera);
   monolith.render(context, camera);
 

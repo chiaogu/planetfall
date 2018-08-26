@@ -1,22 +1,24 @@
 export default class Background {
   constructor() {
-    this.stars = Array(5)
+    this.stars = Array(500)
       .fill()
       .map(_ => ({
-        x: 0,
-        y: 0,
-        radius: 2
+        x: Math.random() * 4000 - 2000,
+        y: Math.random() * 4000 - 2000,
+        radius: Math.random() * 0.3
       }));
   }
   render(context, camera) {
     this.stars.forEach(star => {
       context.fillStyle = "#fff";
 
-      const x = camera.width / 2 - camera.x + star.x;
-      const y = camera.height / 2 - camera.y + star.y;
-      context.beginPath();
-      context.arc(x, y, star.radius, 0, 2 * Math.PI);
-      context.fill();
+      if (Math.hypot(star.x - camera.x, star.y - camera.y) > 2000) {
+        star.x = Math.random() * 4000 - 2000 + camera.x;
+        star.y =  Math.random() * 4000 - 2000 + camera.y;
+      }
+;
+      let { x, y } = camera.transform(star, star.radius + 0.3);
+      context.fillRect(x, y, 1, 1);
     });
   }
 }

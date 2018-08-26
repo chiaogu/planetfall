@@ -1,4 +1,4 @@
-const A = 0.01;
+const A = 0.03;
 const AR = 0.03;
 
 export default class Camera {
@@ -122,17 +122,17 @@ export default class Camera {
     return distance - radius;
   }
 
-  transform(point) {
+  transform(point, zoomRation = 1) {
     const theta = (this.rotaion * Math.PI) / 180;
     let x =
-      (point.x - this.x) * Math.cos(theta) * this.zoom -
-      (point.y - this.y) * Math.sin(theta) * this.zoom +
+      (point.x - this.x) * Math.cos(theta) * this.zoom * zoomRation -
+      (point.y - this.y) * Math.sin(theta) * this.zoom * zoomRation +
       this.x;
     x = window.innerWidth / 2 - this.x + x;
 
     let y =
-      (point.x - this.x) * Math.sin(theta) * this.zoom +
-      (point.y - this.y) * Math.cos(theta) * this.zoom +
+      (point.x - this.x) * Math.sin(theta) * this.zoom * zoomRation +
+      (point.y - this.y) * Math.cos(theta) * this.zoom * zoomRation +
       this.y;
     y = window.innerHeight / 2 - this.y + y;
 
