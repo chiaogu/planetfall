@@ -27,8 +27,9 @@ export default class Camera {
   updateOnPlanet(pressingKeys, planet, monolith) {
     const gravityAngle = this.findAngle(planet);
     const gravityTheta = (gravityAngle * Math.PI) / 180;
-
     const distance = this.distance(planet, monolith);
+    const distanceRatio = (1 - distance / planet.radius);
+
     const isCollided = distance <= 0;
     if (isCollided) {
       this.isJumping = false;
@@ -38,8 +39,8 @@ export default class Camera {
       this.vy = 0;
       this.vr = 0;
     } else {
-      this.vx -= 0.05 * Math.sin(gravityTheta);
-      this.vy += 0.05 * Math.cos(gravityTheta);
+      this.vx -= planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
+      this.vy += planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
     }
 
     if (pressingKeys[37]) {
@@ -50,21 +51,24 @@ export default class Camera {
       this.vx += 0.05 * Math.cos(gravityTheta);
       this.vy += 0.05 * Math.sin(gravityTheta);
     }
-    if (pressingKeys[38] && !this.isJumping) {
-      this.isJumping = true;
-      this.vx += 1 * Math.sin(gravityTheta);
-      this.vy -= 1 * Math.cos(gravityTheta);
+    if (pressingKeys[38]) {
+      if(this.isJumping) {
+        if(distance > 10) {
+          this.vx += (planet.gravity + 0.002) * Math.sin(gravityTheta);
+          this.vy -= (planet.gravity + 0.002) * Math.cos(gravityTheta);
+        }
+      } else {
+        this.isJumping = true;
+        this.vx += 1 * Math.sin(gravityTheta);
+        this.vy -= 1 * Math.cos(gravityTheta);
+      }
     }
     if (pressingKeys[40]) {
       this.vx -= 0.1 * Math.sin(gravityTheta);
       this.vy += 0.1 * Math.cos(gravityTheta);
     }
-    if (pressingKeys[32]) {
-      this.zoom = 8;
-    } else {
-      this.zoom = 1;
-    }
 
+    this.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
     this.rotaion = 360 - gravityAngle;
   }
 
@@ -105,21 +109,11 @@ export default class Camera {
   }
 
   distance(planet, monolith) {
-    const { _x: cx, _y: cy, _radius: radius } = planet;
-    const { _x: rx, _y: ry, _width: rw, _height: rh } = monolith;
-    let testX = cx;
-    let testY = cy;
-
-    if (cx < rx) testX = rx;
-    else if (cx > rx + rw) testX = rx + rw;
-    if (cy < ry) testY = ry;
-    else if (cy > ry + rh) testY = ry + rh;
-
-    const distX = cx - testX;
-    const distY = cy - testY;
-    const distance = Math.sqrt(distX * distX + distY * distY);
-
-    return distance - radius;
+    return (
+      Math.hypot(planet.x - this.x, planet.y - this.y) -
+      planet.radius -
+      monolith.height / 2
+    );
   }
 
   transform(point, zoomRation = 1) {

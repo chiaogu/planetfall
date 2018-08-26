@@ -1,9 +1,9 @@
 export default class Planet {
   constructor() {
-    this.radius = 2000;
+    this.radius = 200;
     this.x = 0;
-    this.y = 2010;
-    this.elasticity = 0.5;
+    this.y = 210;
+    this.gravity = 0.05;
   }
   render(context, camera) {
     context.fillStyle = "#fff";
@@ -20,11 +20,15 @@ export default class Planet {
       x: this.x,
       y: this.y - this.radius
     });
+    const { x:sx, y:sy } = camera.transform({
+      x: this.x,
+      y: this.y + this.radius
+    });
     context.fillStyle = "#fff";
     context.fillText('N', nx, ny);
 
     context.beginPath();
-    context.moveTo(x, y);
+    context.moveTo(sx, sy);
     context.lineTo(nx, ny);
     context.stroke();
   }

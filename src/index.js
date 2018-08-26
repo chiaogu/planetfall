@@ -18,7 +18,7 @@ const draw = () => {
   canvas.height = window.innerHeight;
 
   let closetPlanet;
-  if(camera.distance(planet, monolith) < planet.radius / 2) {
+  if(camera.distance(planet, monolith) < planet.radius) {
     closetPlanet = planet;
   }
   camera.update(pressingKeys, closetPlanet, monolith);
