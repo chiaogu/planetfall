@@ -28,7 +28,7 @@ export default class Camera {
     const gravityAngle = this.findAngle(planet);
     const gravityTheta = (gravityAngle * Math.PI) / 180;
     const distance = this.distance(planet, monolith);
-    const distanceRatio = (1 - distance / planet.radius);
+    const distanceRatio = 1 - distance / planet.radius;
 
     const isCollided = distance <= 0;
     if (isCollided) {
@@ -37,10 +37,25 @@ export default class Camera {
       this.y -= this.vy;
       this.vx = 0;
       this.vy = 0;
-      this.vr = 0;
     } else {
-      this.vx -= planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
-      this.vy += planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
+      this.vx -=
+        planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
+      this.vy +=
+        planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
+    }
+
+    this.vr = 0;
+    this.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
+    let rDiff = 360 - gravityAngle - this.rotaion;
+    if (rDiff < 0) rDiff += 360;
+    if (rDiff > 10 && rDiff < 180) {
+      this.rotaion += 10 * distanceRatio * distanceRatio;
+      this.rotaion %= 360;
+    } else if (rDiff >= 180 && rDiff <= 350) {
+      this.rotaion -= 10 * distanceRatio * distanceRatio;
+      this.rotaion %= 360;
+    } else {
+      this.rotaion = 360 - gravityAngle;
     }
 
     if (pressingKeys[37]) {
@@ -52,8 +67,8 @@ export default class Camera {
       this.vy += 0.05 * Math.sin(gravityTheta);
     }
     if (pressingKeys[38]) {
-      if(this.isJumping) {
-        if(distance > 10) {
+      if (this.isJumping) {
+        if (distance > 10) {
           this.vx += (planet.gravity + 0.002) * Math.sin(gravityTheta);
           this.vy -= (planet.gravity + 0.002) * Math.cos(gravityTheta);
         }
@@ -67,9 +82,6 @@ export default class Camera {
       this.vx -= 0.1 * Math.sin(gravityTheta);
       this.vy += 0.1 * Math.cos(gravityTheta);
     }
-
-    this.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
-    this.rotaion = 360 - gravityAngle;
   }
 
   updateInSpace(pressingKeys) {
