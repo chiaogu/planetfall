@@ -11,8 +11,9 @@ const pressingKeys = {};
 const camera = new Camera();
 const stars = new Stars();
 const planets = [
-  new Planet({ x: 0, y: 2010, radius: 2000, gravity: 0.05 }),
-  new Planet({ x: 0, y: -4010, radius: 200, gravity: 0.02 })
+  new Planet({ x: 0, y: 4010, radius: 4000, gravity: 0.05 }),
+  new Planet({ x: 0, y: -4000, radius: 100, gravity: 0.02 }),
+  new Planet({ x: 0, y: -12010, radius: 2000, gravity: 0.02 })
 ];
 const monolith = new Monolith();
 
@@ -24,7 +25,7 @@ const draw = () => {
   let closetPlanet;
   let closetDistance = Number.MAX_VALUE;
   planets.forEach(planet => {
-    planet.render(context, camera, monolith)
+    planet.render(context, camera)
     const distance = camera.distance(planet, monolith);
     if (distance < planet.radius && distance < closetDistance) {
       closetPlanet = planet;
@@ -32,7 +33,7 @@ const draw = () => {
     }
   });
   camera.update(pressingKeys, closetPlanet, monolith);
-  monolith.render(context, camera);
+  monolith.render(context, camera, closetPlanet, pressingKeys);
 
   requestAnimationFrame(draw);
 };

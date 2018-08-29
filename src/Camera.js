@@ -27,6 +27,7 @@ export default class Camera {
   updateOnPlanet(pressingKeys, planet, monolith) {
     const gravityAngle = this.findAngle(planet);
     const gravityTheta = (gravityAngle * Math.PI) / 180;
+    const cameraTheta = (this.rotaion * Math.PI) / 180;
     const distance = this.distance(planet, monolith);
     const distanceRatio = 1 - distance / planet.radius;
 
@@ -44,7 +45,6 @@ export default class Camera {
         planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
     }
 
-    this.vr = 0;
     this.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
     let rDiff = 360 - gravityAngle - this.rotaion;
     if (rDiff < 0) rDiff += 360;
@@ -55,22 +55,32 @@ export default class Camera {
       this.rotaion -= 10 * distanceRatio * distanceRatio;
       this.rotaion %= 360;
     } else {
+      this.vr = 0;
       this.rotaion = 360 - gravityAngle;
     }
-
-    if (pressingKeys[37]) {
-      this.vx -= 0.05 * Math.cos(gravityTheta);
-      this.vy -= 0.05 * Math.sin(gravityTheta);
-    }
-    if (pressingKeys[39]) {
-      this.vx += 0.05 * Math.cos(gravityTheta);
-      this.vy += 0.05 * Math.sin(gravityTheta);
+    if (rDiff < 10 || rDiff > 350) {
+      if (pressingKeys[37]) {
+        this.vx -= 0.05 * Math.cos(gravityTheta);
+        this.vy -= 0.05 * Math.sin(gravityTheta);
+      }
+      if (pressingKeys[39]) {
+        this.vx += 0.05 * Math.cos(gravityTheta);
+        this.vy += 0.05 * Math.sin(gravityTheta);
+      }
+    } else {
+      if (pressingKeys[37]) {
+        this.vr += AR;
+      }
+      if (pressingKeys[39]) {
+        this.vr -= AR;
+      }
+      this.rotaion += this.vr;
     }
     if (pressingKeys[38]) {
       if (this.isJumping) {
         if (distance > 10) {
-          this.vx += (planet.gravity + 0.002) * Math.sin(gravityTheta);
-          this.vy -= (planet.gravity + 0.002) * Math.cos(gravityTheta);
+          this.vx -= 0.05 * Math.sin(cameraTheta);
+          this.vy -= 0.05 * Math.cos(cameraTheta);
         }
       } else {
         this.isJumping = true;
@@ -79,8 +89,8 @@ export default class Camera {
       }
     }
     if (pressingKeys[40]) {
-      this.vx -= 0.1 * Math.sin(gravityTheta);
-      this.vy += 0.1 * Math.cos(gravityTheta);
+      this.vx += 0.1 * Math.sin(cameraTheta);
+      this.vy += 0.1 * Math.cos(cameraTheta);
     }
   }
 
