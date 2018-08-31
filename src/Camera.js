@@ -1,4 +1,4 @@
-const A = 0.03;
+const A = 0.1;
 const AR = 0.03;
 
 export default class Camera {
@@ -11,6 +11,7 @@ export default class Camera {
     this.rotaion = 0;
     this.zoom = 1;
     this.isJumping = false;
+    this.fuel = 100;
   }
 
   update(pressingKeys, planet, monolith) {
@@ -78,9 +79,10 @@ export default class Camera {
     }
     if (pressingKeys[38]) {
       if (this.isJumping) {
-        if (distance > 10) {
+        if (distance > 10 && this.fuel > 0) {
           this.vx -= 0.05 * Math.sin(cameraTheta);
           this.vy -= 0.05 * Math.cos(cameraTheta);
+          this.updateFuel();
         }
       } else {
         this.isJumping = true;
@@ -88,7 +90,7 @@ export default class Camera {
         this.vy -= 1 * Math.cos(gravityTheta);
       }
     }
-    if (pressingKeys[40]) {
+    if (pressingKeys[40] && this.fuel > 0) {
       this.vx += 0.1 * Math.sin(cameraTheta);
       this.vy += 0.1 * Math.cos(cameraTheta);
     }
@@ -102,17 +104,24 @@ export default class Camera {
     if (pressingKeys[39]) {
       this.vr -= AR;
     }
-    if (pressingKeys[38]) {
+    if (pressingKeys[38] && this.fuel > 0) {
       this.vx -= A * Math.sin(cameraTheta);
       this.vy -= A * Math.cos(cameraTheta);
+      this.updateFuel();
     }
-    if (pressingKeys[40]) {
+    if (pressingKeys[40] && this.fuel > 0) {
       this.vx += A * Math.sin(cameraTheta);
       this.vy += A * Math.cos(cameraTheta);
+      this.updateFuel();
     }
     this.rotaion += this.vr;
     this.rotaion %= 360;
     this.rotaion += this.rotaion < 0 ? 360 : 0;
+  }
+
+  updateFuel() {
+    this.fuel -= 0.1;
+    this.fuel = Math.max(this.fuel, 0);
   }
 
   findAngle(planet) {
