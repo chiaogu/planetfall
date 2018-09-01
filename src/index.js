@@ -36,7 +36,7 @@ const draw = () => {
   });
   camera.update(pressingKeys, closetPlanet, monolith);
   monolith.render(context, camera, closetPlanet, pressingKeys);
-  dashboard.render(context, camera, planets, pressingKeys);
+  dashboard.render({context, camera, planets, closetPlanet});
 
   requestAnimationFrame(draw);
 };

@@ -39,6 +39,7 @@ export default class Camera {
       this.y -= this.vy;
       this.vx = 0;
       this.vy = 0;
+      this.updateFuel(0.3);
     } else {
       this.vx -=
         planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
@@ -82,7 +83,7 @@ export default class Camera {
         if (distance > 10 && this.fuel > 0) {
           this.vx -= 0.05 * Math.sin(cameraTheta);
           this.vy -= 0.05 * Math.cos(cameraTheta);
-          this.updateFuel();
+          this.updateFuel(-0.1);
         }
       } else {
         this.isJumping = true;
@@ -90,9 +91,15 @@ export default class Camera {
         this.vy -= 1 * Math.cos(gravityTheta);
       }
     }
-    if (pressingKeys[40] && this.fuel > 0) {
-      this.vx += 0.1 * Math.sin(cameraTheta);
-      this.vy += 0.1 * Math.cos(cameraTheta);
+    if (pressingKeys[40]) {
+      if(distance > 10) {
+        if(this.fuel > 0) {
+          this.vx += 0.05 * Math.sin(cameraTheta);
+          this.vy += 0.05 * Math.cos(cameraTheta);
+          this.updateFuel(-0.1);
+        }
+      } else {
+      }
     }
   }
 
@@ -107,21 +114,21 @@ export default class Camera {
     if (pressingKeys[38] && this.fuel > 0) {
       this.vx -= A * Math.sin(cameraTheta);
       this.vy -= A * Math.cos(cameraTheta);
-      this.updateFuel();
+      this.updateFuel(-0.1);
     }
     if (pressingKeys[40] && this.fuel > 0) {
       this.vx += A * Math.sin(cameraTheta);
       this.vy += A * Math.cos(cameraTheta);
-      this.updateFuel();
+      this.updateFuel(-0.1);
     }
     this.rotaion += this.vr;
     this.rotaion %= 360;
     this.rotaion += this.rotaion < 0 ? 360 : 0;
   }
 
-  updateFuel() {
-    this.fuel -= 0.1;
-    this.fuel = Math.max(this.fuel, 0);
+  updateFuel(amount) {
+    this.fuel += amount;
+    this.fuel = Math.min(Math.max(this.fuel, 0), 100);
   }
 
   findAngle(planet) {

@@ -22,7 +22,7 @@ export default class Monolith {
           y += Math.random() * delta - delta / 2;
 
           const fireWidth = this.tick % 2 === 0 ? width * 0.75 : width;
-          const fireHeight = this.tick % 2 === 0 ? height * 3 : height * 1.5;
+          let fireHeight = this.tick % 2 === 0 ? height * 3 : height * 1.5;
           const gradient = context.createLinearGradient(
             x,
             pressingKeys[38] ? y + height : y,
@@ -36,7 +36,14 @@ export default class Monolith {
             x + width / 2 - fireWidth / 2,
             pressingKeys[38] ? y + height : y - fireHeight,
             fireWidth,
-            fireHeight
+            !planet
+              ? fireHeight
+              : pressingKeys[38]
+                ? Math.min(
+                    fireHeight,
+                    camera.distance(planet, this) * camera.zoom
+                  )
+                : fireHeight
           );
         }
       } else {

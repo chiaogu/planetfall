@@ -16,12 +16,12 @@ export default class Planet {
 
     context.stroke();
     const grd = context.createRadialGradient(x, y, radius, x, y, radius * 1.8);
-    grd.addColorStop(0, "rgba(100,100,100,1)");
+    grd.addColorStop(0, "#D16A20");
     grd.addColorStop(1, "rgba(0,0,0,0)");
     context.fillStyle = grd;
     context.fill();
 
-    context.fillStyle = "#fff";
+    context.fillStyle = "#961F0E";
     context.beginPath();
     context.arc(x, y, radius, 0, 2 * Math.PI);
     context.fill();
