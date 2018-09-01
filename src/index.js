@@ -12,8 +12,8 @@ const pressingKeys = {};
 const camera = new Camera();
 const stars = new Stars();
 const planets = [
-  new Planet({ x: 0, y: 2010, radius: 2000, gravity: 0.05 }),
-  new Planet({ x: -200, y: -2000, radius: 100, gravity: 0.05 }),
+  new Planet({ x: 0, y: 2010, radius: 2000, gravity: 0.05, satelliteStationAzimuth: 0 }),
+  new Planet({ x: -200, y: -2000, radius: 100, gravity: 0.05, satelliteStationAzimuth: 200 }),
   new Planet({ x: 0, y: -12010, radius: 2000, gravity: 0.02 })
 ];
 const monolith = new Monolith();

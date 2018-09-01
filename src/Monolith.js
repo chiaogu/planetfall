@@ -1,3 +1,4 @@
+import { findAngle } from './utils';
 export default class Monolith {
   constructor() {
     this.width = 5;
@@ -54,7 +55,7 @@ export default class Monolith {
       const isNeedHorizontalFire =
         !planet ||
         (planet && camera.isJumping && camera.distance(planet, this) > 20);
-      const gravityAngle = planet ? camera.findAngle(planet) : 0;
+      const gravityAngle = planet ? findAngle(planet, camera) : 0;
       let rDiff = 360 - gravityAngle - camera.rotaion;
       if (rDiff < 0) rDiff += 360;
 

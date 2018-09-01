@@ -1,3 +1,4 @@
+import { findAngle } from './utils';
 const A = 0.1;
 const AR = 0.03;
 
@@ -26,7 +27,7 @@ export default class Camera {
   }
 
   updateOnPlanet(pressingKeys, planet, monolith) {
-    const gravityAngle = this.findAngle(planet);
+    const gravityAngle = findAngle(planet, this);
     const gravityTheta = (gravityAngle * Math.PI) / 180;
     const cameraTheta = (this.rotaion * Math.PI) / 180;
     const distance = this.distance(planet, monolith);
@@ -129,17 +130,6 @@ export default class Camera {
   updateFuel(amount) {
     this.fuel += amount;
     this.fuel = Math.min(Math.max(this.fuel, 0), 100);
-  }
-
-  findAngle(planet) {
-    const { x, y } = this;
-    const diff_x = planet.x - x;
-    const diff_y = planet.y - y;
-    let angle = (360 * Math.atan(diff_y / diff_x)) / (2 * Math.PI) - 90;
-    if (diff_x < 0) angle += 180;
-    else if (diff_y < 0) angle += 360;
-    else angle += 360;
-    return angle;
   }
 
   collision(planet, monolith) {

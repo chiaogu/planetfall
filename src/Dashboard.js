@@ -1,3 +1,4 @@
+import { findAngle } from './utils';
 export default class Dashboard {
   constructor() {}
 
@@ -7,7 +8,7 @@ export default class Dashboard {
     const attrs = [["velocity", v, 200], ["fuel", fuel, 100]];
 
     if (closetPlanet) {
-      const azimuth = Math.round(camera.findAngle(closetPlanet));
+      const azimuth = Math.round(findAngle(closetPlanet, camera));
       attrs.push(["azimuth", azimuth, 360]);
     }
 
