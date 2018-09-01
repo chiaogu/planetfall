@@ -35,7 +35,6 @@ export default class Planet {
   }
 
   renderBackground(context, camera) {
-    // const anzimuth = camera.findAngle(this);
     if (this.satelliteStationAzimuth !== undefined) {
       const satelliteTheta = (this.satelliteStationAzimuth * Math.PI) / 180;
       const satelliteStation = {
@@ -43,9 +42,9 @@ export default class Planet {
         y: this.y + this.radius * Math.sin(satelliteTheta)
       };
 
-      [SATELLITE_STATION].map(object => {
+      [SATELLITE_STATION].map(object => object.layers.map(layer => {
         context.beginPath();
-        object.paths.map(([_x, _y], index) => {
+        layer.paths.map(([_x, _y], index) => {
           const distance = Math.hypot(_x, _y);
           const angle =
             findAngle({ x: 0, y: 0 }, { x: _x, y: _y }) + this.satelliteStationAzimuth;
@@ -60,10 +59,10 @@ export default class Planet {
             context.lineTo(x, y);
           }
         })
-        context.fillStyle = object.color;
+        context.fillStyle = layer.color(context);
         context.closePath();
         context.fill();
-      });
+      }));
     }
   }
 }
