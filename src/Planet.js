@@ -1,16 +1,18 @@
 import { findAngle } from './utils';
 import { SatelliteStation } from './SatelliteStation';
 export default class Planet {
-  constructor({ x, y, radius, gravity, satelliteStationAzimuth }) {
+  constructor({ x, y, radius, gravity, name, satelliteStationAzimuth }) {
+    this.name = name;
     this.x = x;
     this.y = y;
     this.radius = radius;
     this.gravity = gravity;
+    this.satelliteStationAzimuth = satelliteStationAzimuth;
+
     this.objects = [];
     if (satelliteStationAzimuth !== undefined) {
-      this.satelliteStationAzimuth = (satelliteStationAzimuth - 90) % 360;
       this.objects.push({
-        azimuth: this.satelliteStationAzimuth,
+        azimuth: (satelliteStationAzimuth - 90) % 360,
         render: new SatelliteStation().render
       });
     }

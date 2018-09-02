@@ -3,6 +3,7 @@ import Camera from './Camera';
 import Monolith from './Monolith';
 import Stars from './Stars';
 import Dashboard from './Dashboard';
+import Achievement from './Achievement';
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
@@ -12,12 +13,13 @@ const pressingKeys = {};
 const camera = new Camera();
 const stars = new Stars();
 const planets = [
-  new Planet({ x: 0, y: 2010, radius: 2000, gravity: 0.05, satelliteStationAzimuth: 0 }),
-  new Planet({ x: -200, y: -2000, radius: 100, gravity: 0.05, satelliteStationAzimuth: 200 }),
-  new Planet({ x: 0, y: -12010, radius: 2000, gravity: 0.02 })
+  new Planet({ x: 0, y: 2010, radius: 2000, gravity: 0.05, satelliteStationAzimuth: 90, name: 'Nadium' }),
+  new Planet({ x: -200, y: -2000, radius: 100, gravity: 0.05, satelliteStationAzimuth: 200, name: 'Catlax' }),
+  new Planet({ x: 0, y: -12010, radius: 2000, gravity: 0.02, satelliteStationAzimuth: 180, name: 'Kapbula' })
 ];
 const monolith = new Monolith();
 const dashboard = new Dashboard();
+const achievement = new Achievement(planets);
 
 const draw = () => {
   canvas.width = window.innerWidth;
@@ -36,7 +38,8 @@ const draw = () => {
   });
   camera.update(pressingKeys, closetPlanet, monolith);
   monolith.render(context, camera, closetPlanet, pressingKeys);
-  dashboard.render({ context, camera, planets, closetPlanet });
+  achievement.update(camera, closetPlanet, pressingKeys, monolith);
+  dashboard.render({ context, camera, planets, closetPlanet, achievement });
 
   requestAnimationFrame(draw);
 };

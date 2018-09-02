@@ -59,6 +59,7 @@ export default class Camera {
       this.vr = 0;
       this.rotaion = 360 - gravityAngle;
     }
+
     if (rDiff < 10 || rDiff > 350) {
       if (pressingKeys[37]) {
         this.vx -= 0.05 * Math.cos(gravityTheta);
@@ -77,6 +78,7 @@ export default class Camera {
       }
       this.rotaion += this.vr;
     }
+
     if (pressingKeys[38]) {
       if (this.isJumping) {
         if (distance > 10 && this.fuel > 0) {
@@ -90,6 +92,7 @@ export default class Camera {
         this.vy -= 1 * Math.cos(gravityTheta);
       }
     }
+
     if (pressingKeys[40]) {
       if (distance > 10) {
         if (this.fuel > 0) {
@@ -97,7 +100,6 @@ export default class Camera {
           this.vy += 0.05 * Math.cos(cameraTheta);
           this.updateFuel(-0.1);
         }
-      } else {
       }
     }
   }
