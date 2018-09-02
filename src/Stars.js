@@ -1,4 +1,4 @@
-export default class Background {
+export default class Stars {
   constructor() {
     this.stars = Array(500)
       .fill()
@@ -10,15 +10,14 @@ export default class Background {
   }
   render(context, camera) {
     this.stars.forEach(star => {
-      context.fillStyle = "#fff";
+      context.fillStyle = '#fff';
 
       if (Math.hypot(star.x - camera.x, star.y - camera.y) > 7500) {
         star.x = Math.random() * 15000 - 7500 + camera.x;
-        star.y =  Math.random() * 15000 - 7500 + camera.y;
+        star.y = Math.random() * 15000 - 7500 + camera.y;
       }
-;
       let { x, y } = camera.transform(star, star.radius + 0.1);
-      context.fillRect(x, y, 1 + 1 * star.radius /0.1, 1 + 1 * star.radius /0.1);
+      context.fillRect(x, y, 1 + (1 * star.radius) / 0.1, 1 + (1 * star.radius) / 0.1);
     });
   }
 }

@@ -27,7 +27,7 @@ const draw = () => {
   let closetPlanet;
   let closetDistance = Number.MAX_VALUE;
   planets.forEach(planet => {
-    planet.render(context, camera)
+    planet.render(context, camera);
     const distance = camera.distance(planet, monolith);
     if (distance < planet.radius && distance < closetDistance) {
       closetPlanet = planet;
@@ -36,7 +36,7 @@ const draw = () => {
   });
   camera.update(pressingKeys, closetPlanet, monolith);
   monolith.render(context, camera, closetPlanet, pressingKeys);
-  dashboard.render({context, camera, planets, closetPlanet});
+  dashboard.render({ context, camera, planets, closetPlanet });
 
   requestAnimationFrame(draw);
 };

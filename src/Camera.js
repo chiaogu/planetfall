@@ -42,10 +42,8 @@ export default class Camera {
       this.vy = 0;
       this.updateFuel(0.3);
     } else {
-      this.vx -=
-        planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
-      this.vy +=
-        planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
+      this.vx -= planet.gravity * distanceRatio * distanceRatio * Math.sin(gravityTheta);
+      this.vy += planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
     }
 
     this.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
@@ -93,8 +91,8 @@ export default class Camera {
       }
     }
     if (pressingKeys[40]) {
-      if(distance > 10) {
-        if(this.fuel > 0) {
+      if (distance > 10) {
+        if (this.fuel > 0) {
           this.vx += 0.05 * Math.sin(cameraTheta);
           this.vy += 0.05 * Math.cos(cameraTheta);
           this.updateFuel(-0.1);
@@ -137,11 +135,7 @@ export default class Camera {
   }
 
   distance(planet, monolith) {
-    return (
-      Math.hypot(planet.x - this.x, planet.y - this.y) -
-      planet.radius -
-      monolith.height / 2
-    );
+    return Math.hypot(planet.x - this.x, planet.y - this.y) - planet.radius - monolith.height / 2;
   }
 
   transform(point, zoomRation = 1) {
