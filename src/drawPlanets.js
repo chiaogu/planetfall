@@ -1,12 +1,13 @@
 import { camera, planets } from './models';
-import { transform, distanceToPlanetSurface } from './utils';
+import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
+import getObjectRenderer from './getObjectRenderer';
 
 export default context => {
   camera.planet = undefined;
   let closesetDistance = Number.MAX_VALUE;
 
   planets.map(planet => {
-    const distance = distanceToPlanetSurface(planet);
+    const distance = getDistanceToPlanetSurface(planet);
     if (distance < planet.radius && distance < closesetDistance) {
       camera.planet = planet;
       closesetDistance = distance;
@@ -27,7 +28,7 @@ export default context => {
     context.fillStyle = grd;
     context.fill();
 
-    // this.renderBackground(context, camera);
+    drawBackground(context, planet);
 
     context.fillStyle = '#961F0E';
     context.beginPath();
@@ -35,3 +36,11 @@ export default context => {
     context.fill();
   });
 };
+
+function drawBackground(context, planet) {
+  planet.objects.map(([azimuth, id]) =>
+    getObjectRenderer(id)(context, (x, y) => {
+      return transform(getPositionOnPlanetSurface(planet, azimuth, { x, y }));
+    })
+  );
+}

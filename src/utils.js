@@ -32,14 +32,51 @@ export function getTheta(angle) {
   return (angle * Math.PI) / 180;
 }
 
-export function distanceToPlanetSurface(planet) {
+export function getDistanceToPlanetSurface(planet) {
   return Math.hypot(planet.x - camera.x, planet.y - camera.y) - planet.radius - character.height / 2;
+}
+
+export function getPositionOnPlanetSurface(planet, azimuth, point) {
+  const anchorTheta = ((azimuth - 90) * Math.PI) / 180;
+  const anchorPosition = {
+    x: planet.x + planet.radius * Math.cos(anchorTheta),
+    y: planet.y + planet.radius * Math.sin(anchorTheta)
+  };
+  if(!point) {
+    return anchorPosition;
+  }
+
+  const { x, y } = point;
+  const distance = Math.hypot(x, y);
+  const angle = getAngle({ x: 0, y: 0 }, { x, y }) + azimuth - 90;
+  const theta = (angle * Math.PI) / 180;
+  return {
+    x: anchorPosition.x + distance * Math.cos(theta),
+    y: anchorPosition.y + distance * Math.sin(theta)
+  };
 }
 
 export function isAccelerating() {
   return (
     (pressingKeys[38] || pressingKeys[40]) &&
     camera.fuel > 0 &&
-    (!camera.planet || distanceToPlanetSurface(camera.planet) > 10)
+    (!camera.planet || getDistanceToPlanetSurface(camera.planet) > 10)
   );
 }
+
+export function drawImage(context, layers) {
+  return layers.map(layer => {
+    context.beginPath();
+    layer.paths.map(({x, y}, index) => {
+      if (index === 0) {
+        context.moveTo(x, y);
+      } else {
+        context.lineTo(x, y);
+      }
+    });
+    context.fillStyle = layer.color(context);
+    context.closePath();
+    context.fill();
+  });
+}
+

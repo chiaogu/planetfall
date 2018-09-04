@@ -1,15 +1,15 @@
-import { camera } from './models';
-import { getAngle, isAccelerating, transform } from './utils';
+import { camera, achievements, planets } from './models';
+import { getAngle, isAccelerating } from './utils';
 
 export default context => {
   const attrs = [
     ['velocity', (Math.hypot(camera.vx, camera.vy) * 10).toFixed(), 200],
-    ['fuel', Math.round(camera.fuel), 100]
-    // [
-    //   'achievement',
-    //   Object.keys(achievement.achievements).filter(planet => achievement.achievements[planet]).length,
-    //   planets.length
-    // ]
+    ['fuel', Math.round(camera.fuel), 100],
+    [
+      'saved planet',
+      Object.keys(achievements.savedPlanets).filter(planet => achievements.savedPlanets[planet]).length,
+      planets.length
+    ]
   ];
 
   if (camera.planet) {

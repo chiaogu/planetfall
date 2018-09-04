@@ -1,5 +1,6 @@
 import { pressingKeys } from './models';
 import updateCamera from './updateCamera';
+import updateAchievements from './updateAchievements';
 import drawPlanets from './drawPlanets';
 import drawCharacter from './drawCharacter';
 import drawStars from './drawStars';
@@ -16,6 +17,7 @@ function tick() {
   canvas.height = window.innerHeight;
 
   updateCamera();
+  updateAchievements();
   drawStars(context);
   drawPlanets(context);
   drawCharacter(context);

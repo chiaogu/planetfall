@@ -1,5 +1,5 @@
 import { character, camera, pressingKeys } from './models';
-import { transform, distanceToPlanetSurface, getAngle, isAccelerating } from './utils';
+import { transform, getDistanceToPlanetSurface, getAngle, isAccelerating } from './utils';
 
 let frame = 0;
 
@@ -34,13 +34,13 @@ export default context => {
       !planet
         ? fireHeight
         : pressingKeys[38]
-          ? Math.min(fireHeight, transform(distanceToPlanetSurface(planet)))
+          ? Math.min(fireHeight, transform(getDistanceToPlanetSurface(planet)))
           : fireHeight
     );
   }
 
   if ((pressingKeys[37] || pressingKeys[39]) && frame % 3 === 0) {
-    const isNeedHorizontalFire = !planet || (planet && camera.isJumping && distanceToPlanetSurface(planet) > 20);
+    const isNeedHorizontalFire = !planet || (planet && camera.isJumping && getDistanceToPlanetSurface(planet) > 20);
     const gravityAngle = planet ? getAngle(planet, camera) : 0;
     let rDiff = 360 - gravityAngle - camera.rotaion;
     if (rDiff < 0) rDiff += 360;

@@ -1,5 +1,5 @@
 import { camera, pressingKeys } from './models';
-import { getAngle, getTheta, distanceToPlanetSurface } from './utils';
+import { getAngle, getTheta, getDistanceToPlanetSurface } from './utils';
 const A = 0.1;
 const AR = 0.03;
 
@@ -19,7 +19,7 @@ function updateOnPlanet() {
   const gravityAngle = getAngle(planet, camera);
   const gravityTheta = getTheta(gravityAngle);
   const cameraTheta = getTheta(camera.rotaion);
-  const distance = distanceToPlanetSurface(planet);
+  const distance = getDistanceToPlanetSurface(planet);
   const distanceRatio = 1 - distance / planet.radius;
 
   if (distance <= 0) {
