@@ -77,14 +77,12 @@ const LAYERS = [
   }
 ];
 
-export class SatelliteStation {
-  render(context, transform) {
-    drawImage(
-      context,
-      LAYERS.map(({ color, paths }) => ({
-        color,
-        paths: paths.map(([x, y]) => transform(x, y))
-      }))
-    );
-  }
+export default (context, transform) => {
+  drawImage(
+    context,
+    LAYERS.map(({ color, paths }) => ({
+      color,
+      paths: paths.map(([x, y]) => transform(x, y))
+    }))
+  );
 }

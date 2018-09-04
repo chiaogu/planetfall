@@ -1,0 +1,1 @@
+export const OBJECT_SATELLITE_STATION = 0;
