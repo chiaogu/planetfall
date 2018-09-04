@@ -50,3 +50,5 @@ export const pressingKeys = {};
 export const achievements = {
   savedPlanets: {}
 }
+
+export const radarWaves = [];

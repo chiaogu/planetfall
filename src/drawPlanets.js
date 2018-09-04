@@ -2,7 +2,7 @@ import { camera, planets } from './models';
 import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
 import getObjectRenderer from './getObjectRenderer';
 
-export default context => {
+export function drawPlanets(context) {
   camera.planet = undefined;
   let closesetDistance = Number.MAX_VALUE;
 
@@ -13,6 +13,19 @@ export default context => {
       closesetDistance = distance;
     }
 
+    drawBackground(context, planet);
+
+    const { x, y } = transform(planet);
+    const radius = transform(planet.radius);
+    context.fillStyle = '#961F0E';
+    context.beginPath();
+    context.arc(x, y, radius, 0, 2 * Math.PI);
+    context.fill();
+  });
+};
+
+export function drawAtmosphere(context) {
+  planets.map(planet => {
     const { x, y } = transform(planet);
     const radius = transform(planet.radius);
 
@@ -27,15 +40,8 @@ export default context => {
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     context.fillStyle = grd;
     context.fill();
-
-    drawBackground(context, planet);
-
-    context.fillStyle = '#961F0E';
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
-    context.fill();
   });
-};
+}
 
 function drawBackground(context, planet) {
   planet.objects.map(([azimuth, id]) =>
