@@ -1,4 +1,4 @@
-import { drawImage } from './utils';
+import { drawImage, transform } from './utils';
 
 const LAYERS = [
   {
@@ -77,12 +77,31 @@ const LAYERS = [
   }
 ];
 
-export default (context, transform) => {
+let _radius = 20;
+let delta = 1;
+
+export default (context, isOffline, transformOnPlanet) => {
   drawImage(
     context,
     LAYERS.map(({ color, paths }) => ({
       color,
-      paths: paths.map(([x, y]) => transform(x, y))
+      paths: paths.map(([x, y]) => transformOnPlanet(x, y))
     }))
   );
-}
+
+  const { x, y } = transformOnPlanet(-9.8, -36.8);
+  const radius = transform(_radius * (isOffline ? 0.8 : 1));
+  const grd = context.createRadialGradient(x, y, 0, x, y, radius);
+  const color = isOffline ? [255,0,0] : [0,255,0];
+  grd.addColorStop(0, '#fff');
+  grd.addColorStop(0.3, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.5)`);
+  grd.addColorStop(1, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0)`);
+  context.fillStyle = grd;
+  context.beginPath();
+  context.arc(x, y, transform(20), 0, 2 * Math.PI);
+  context.fill();
+
+  _radius += 0.01 * delta;
+  if(_radius<= 15) delta = 1;
+  if(_radius>= 20) delta = -1;
+};

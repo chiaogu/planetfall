@@ -1,7 +1,7 @@
 import { pressingKeys } from './models';
 import updateCamera from './updateCamera';
-import updateAchievements from './updateAchievements';
-import {drawPlanets, drawAtmosphere} from './drawPlanets';
+import updateObjective from './updateObjective';
+import { drawPlanets, drawAtmosphere } from './drawPlanets';
 import drawCharacter from './drawCharacter';
 import drawStars from './drawStars';
 import drawDashboard from './drawDashboard';
@@ -18,7 +18,7 @@ function tick() {
   canvas.height = window.innerHeight;
 
   updateCamera();
-  updateAchievements();
+  updateObjective();
   drawStars(context);
   drawAtmosphere(context);
   drawRadar(context);
@@ -27,6 +27,5 @@ function tick() {
   drawDashboard(context);
 
   requestAnimationFrame(tick);
-};
+}
 tick();
-

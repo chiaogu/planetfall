@@ -1,4 +1,4 @@
-import { camera, radarWaves, pressingKeys, planets, achievements } from './models';
+import { camera, radarWaves, pressingKeys, planets, objectives } from './models';
 import { transform, getPositionOnPlanetSurface } from './utils';
 import { OBJECT_SATELLITE_STATION } from './constants';
 
@@ -37,7 +37,7 @@ export default context => {
 
     for (let j = 0; j < planets.length; j++) {
       const planet = planets[j];
-      const { savedPlanets } = achievements;
+      const { savedPlanets } = objectives;
       if(savedPlanets[planet.name]) continue;
 
       const satelliteStation = planet.objects.find(object => object[1] === OBJECT_SATELLITE_STATION);

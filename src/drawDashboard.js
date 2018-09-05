@@ -1,4 +1,4 @@
-import { camera, achievements, planets } from './models';
+import { camera, objectives, planets } from './models';
 import { getAngle, isAccelerating } from './utils';
 
 export default context => {
@@ -7,7 +7,7 @@ export default context => {
     ['fuel', Math.round(camera.fuel), 100],
     [
       'saved planet',
-      Object.keys(achievements.savedPlanets).filter(planet => achievements.savedPlanets[planet]).length,
+      Object.keys(objectives.savedPlanets).filter(planet => objectives.savedPlanets[planet]).length,
       planets.length
     ]
   ];

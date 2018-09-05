@@ -20,7 +20,11 @@ export const planets = [
     y: 2010,
     radius: 2000,
     gravity: 0.05,
-    objects: [[0, OBJECT_SATELLITE_STATION]]
+    color: {
+      land: '#961F0E',
+      atmosphere: '#D16A20'
+    },
+    objects: [[0, OBJECT_SATELLITE_STATION, false]]
   },
   {
     name: 'Catlax',
@@ -28,7 +32,11 @@ export const planets = [
     y: -2000,
     radius: 100,
     gravity: 0.05,
-    objects: [[200, OBJECT_SATELLITE_STATION]]
+    color: {
+      land: '#fff',
+      atmosphere: '#00f'
+    },
+    objects: [[200, OBJECT_SATELLITE_STATION, false]]
   },
   {
     name: 'Kapbula',
@@ -36,7 +44,11 @@ export const planets = [
     y: -12010,
     radius: 2000,
     gravity: 0.02,
-    objects: [[180, OBJECT_SATELLITE_STATION]]
+    color: {
+      land: '#fff',
+      atmosphere: '#ff0'
+    },
+    objects: [[180, OBJECT_SATELLITE_STATION, false]]
   }
 ];
 
@@ -47,7 +59,7 @@ export const character = {
 
 export const pressingKeys = {};
 
-export const achievements = {
+export const objectives = {
   savedPlanets: {}
 }
 

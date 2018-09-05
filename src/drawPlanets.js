@@ -17,7 +17,7 @@ export function drawPlanets(context) {
 
     const { x, y } = transform(planet);
     const radius = transform(planet.radius);
-    context.fillStyle = '#961F0E';
+    context.fillStyle = planet.color.land;
     context.beginPath();
     context.arc(x, y, radius, 0, 2 * Math.PI);
     context.fill();
@@ -35,8 +35,8 @@ export function drawAtmosphere(context) {
     context.arc(x, y, radius * 2, 0, 2 * Math.PI);
     context.stroke();
 
-    const grd = context.createRadialGradient(x, y, radius, x, y, radius * 1.8);
-    grd.addColorStop(0, '#D16A20');
+    const grd = context.createRadialGradient(x, y, radius, x, y, radius * 2);
+    grd.addColorStop(0, planet.color.atmosphere);
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     context.fillStyle = grd;
     context.fill();
@@ -44,8 +44,8 @@ export function drawAtmosphere(context) {
 }
 
 function drawBackground(context, planet) {
-  planet.objects.map(([azimuth, id]) =>
-    getObjectRenderer(id)(context, (x, y) => {
+  planet.objects.map(([azimuth, id, state]) =>
+    getObjectRenderer(id)(context, state, (x, y) => {
       return transform(getPositionOnPlanetSurface(planet, azimuth, { x, y }));
     })
   );
