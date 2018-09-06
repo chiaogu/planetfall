@@ -1,5 +1,5 @@
 import { character, camera, pressingKeys } from './models';
-import { transform, getDistanceToPlanetSurface, getAngle, isAccelerating } from './utils';
+import { transform, getDistanceToPlanetSurface, getAngle, isAccelerating, white } from './utils';
 
 let frame = 0;
 
@@ -25,7 +25,7 @@ export default context => {
       pressingKeys[38] ? y + height + fireHeight : y - fireHeight
     );
     gradient.addColorStop(0, '#fff');
-    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    gradient.addColorStop(1, white(0));
     context.fillStyle = gradient;
     context.fillRect(
       x + width / 2 - fireWidth / 2,
@@ -55,7 +55,7 @@ export default context => {
         y
       );
       gradient.addColorStop(0, '#fff');
-      gradient.addColorStop(1, 'rgba(255,255,255,0)');
+      gradient.addColorStop(1, white(0));
       context.fillStyle = gradient;
       const rectArg = [
         pressingKeys[39] ? x - fireWidth : x + width,
@@ -74,7 +74,7 @@ export default context => {
           y
         );
         gradient.addColorStop(0, '#fff');
-        gradient.addColorStop(1, 'rgba(255,255,255,0)');
+        gradient.addColorStop(1, white(0));
         context.fillStyle = gradient;
         const rectArg = [pressingKeys[37] ? x - fireWidth : x + width, y + height - fireHeight, fireWidth, fireHeight];
         context.fillRect(...rectArg);

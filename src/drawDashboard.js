@@ -1,5 +1,6 @@
 import { camera, objectives, planets } from './models';
-import { getAngle, isAccelerating, getTheta, getDistanceToPlanetSurface } from './utils';
+import { getAngle, isAccelerating, getTheta, getDistanceToPlanetSurface, white } from './utils';
+import { FONT } from './constants';
 
 export default context => {
   const attrs = [
@@ -12,13 +13,15 @@ export default context => {
   let x = shake[0] + 32;
   let y = shake[1] + window.innerHeight - 140;
 
+  context.shadowColor = '#fff';
+  context.shadowBlur = 20;
   attrs.forEach(([name, value, denominator], index) => {
     const margin = 48;
 
-    context.font = '16px Courier New';
-    context.fillStyle = 'rgba(255,255,255,0.3)';
+    context.font = `16px ${FONT}`;
+    context.fillStyle = white(0.3);
     context.fillText(name, x, 30 + y);
-    context.font = '20px Courier New';
+    context.font = `20px ${FONT}`;
     context.fillStyle = '#fff';
     context.fillText(value, x, 52 + y);
 
@@ -26,7 +29,7 @@ export default context => {
       const ratio = Math.min(1, value / denominator);
       context.fillStyle = '#fff';
       context.fillRect(50 + x, 40 + y, 100 * ratio, 10);
-      context.fillStyle = 'rgba(255,255,255,0.3)';
+      context.fillStyle = white(0.3);
       context.fillRect(50 + x, 40 + y, 100, 10);
     }
 
@@ -34,10 +37,10 @@ export default context => {
   });
 
   context.textAlign = 'right';
-  context.font = '24px Courier New';
-  context.fillStyle = 'rgba(255,255,255,0.3)';
+  context.font = `24px ${FONT}`;
+  context.fillStyle = white(0.3);
   context.fillText(`/13`, shake[0] + window.innerWidth - 24, shake[1] + 50);
-  context.font = '48px Courier New';
+  context.font = `48px ${FONT}`;
   context.fillStyle = '#fff';
   context.fillText(
     Object.keys(objectives.savedPlanets).filter(planet => objectives.savedPlanets[planet]).length,
@@ -51,7 +54,7 @@ export default context => {
     const r = 32;
     const theta = getTheta(getAngle(camera.planet, camera) - 90);
 
-    context.fillStyle = 'rgba(255,255,255,0.3)';
+    context.fillStyle = white(0.3);
     context.beginPath();
     context.arc(x - r, y, r, 0, 2 * Math.PI);
     context.fill();
@@ -62,9 +65,10 @@ export default context => {
     context.arc(x - r + pointR * Math.cos(theta), y + pointR * Math.sin(theta), 3, 0, 2 * Math.PI);
     context.fill();
 
-    context.font = '20px Courier New';
+    context.font = `20px ${FONT}`;
     context.fillStyle = '#fff';
     context.textAlign = 'right';
     context.fillText(camera.planet.name, x, shake[1] + window.innerHeight - 32);
   }
+  context.shadowBlur = 0;
 };

@@ -34,7 +34,7 @@ function updateOnPlanet() {
     camera.vy += planet.gravity * distanceRatio * distanceRatio * Math.cos(gravityTheta);
   }
 
-  camera.zoom = 1 + 5 * distanceRatio * distanceRatio * distanceRatio;
+  camera.zoom = 1 + 4 * distanceRatio * distanceRatio * distanceRatio;
   let rDiff = 360 - gravityAngle - camera.rotaion;
   if (rDiff < 0) rDiff += 360;
   if (rDiff > 10 && rDiff < 180) {

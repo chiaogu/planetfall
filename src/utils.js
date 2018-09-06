@@ -80,3 +80,6 @@ export function drawImage(context, layers) {
   });
 }
 
+export function white(alpha) {
+  return `rgba(255,255,255,${alpha})`;
+}

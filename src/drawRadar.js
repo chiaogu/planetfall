@@ -1,5 +1,5 @@
 import { camera, radarWaves, pressingKeys, planets, objectives } from './models';
-import { transform, getPositionOnPlanetSurface } from './utils';
+import { transform, getPositionOnPlanetSurface, white } from './utils';
 import { OBJECT_SATELLITE_STATION } from './constants';
 
 let isPressed = false;
@@ -67,8 +67,8 @@ function drawWave(context, wave) {
   const { x, y } = transform(wave.send ? camera : wave);
   const r = transform(wave.r);
   const grd = context.createRadialGradient(x, y, r * 0.5, x, y, r);
-  grd.addColorStop(0, 'rgba(255,255,255,0)');
-  grd.addColorStop(1, 'rgba(255,255,255,0.3)');
+  grd.addColorStop(0, white(0));
+  grd.addColorStop(1, white(0.3));
   context.fillStyle = grd;
   context.beginPath();
   context.arc(x, y, r, 0, 2 * Math.PI);

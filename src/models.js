@@ -1,4 +1,4 @@
-import { OBJECT_SATELLITE_STATION } from './constants';
+import { OBJECT_SATELLITE_STATION, STAGE_TITLE } from './constants';
 
 export const camera = {
   x: 0,
@@ -24,7 +24,7 @@ export const planets = [
       land: '#961F0E',
       atmosphere: '#D16A20'
     },
-    objects: [[0, OBJECT_SATELLITE_STATION, false]]
+    objects: [[90, OBJECT_SATELLITE_STATION, false]]
   },
   {
     name: 'Catlax',
@@ -64,3 +64,7 @@ export const objectives = {
 }
 
 export const radarWaves = [];
+
+export const stage = {
+  code: STAGE_TITLE
+};

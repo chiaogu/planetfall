@@ -6,6 +6,7 @@ import drawCharacter from './drawCharacter';
 import drawStars from './drawStars';
 import drawDashboard from './drawDashboard';
 import drawRadar from './drawRadar';
+import drawStage from './drawStage';
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
@@ -23,8 +24,9 @@ function tick() {
   drawAtmosphere(context);
   drawRadar(context);
   drawPlanets(context);
-  drawCharacter(context);
   drawDashboard(context);
+  drawStage(context);
+  drawCharacter(context);
 
   requestAnimationFrame(tick);
 }
