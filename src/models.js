@@ -33,8 +33,8 @@ export const planets = [
     radius: 100,
     gravity: 0.05,
     color: {
-      land: '#fff',
-      atmosphere: '#00f'
+      land: '#555',
+      atmosphere: 'rgba(255,255,255,0.5)'
     },
     objects: [[200, OBJECT_SATELLITE_STATION, false]]
   },
@@ -45,7 +45,7 @@ export const planets = [
     radius: 2000,
     gravity: 0.02,
     color: {
-      land: '#fff',
+      land: '#555',
       atmosphere: '#ff0'
     },
     objects: [[180, OBJECT_SATELLITE_STATION, false]]

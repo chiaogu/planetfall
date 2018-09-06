@@ -20,7 +20,6 @@ export default context => {
   } else {
     isPressed = false;
   }
-
   for (let i = radarWaves.length - 1; i >= 0; i--) {
     const wave = radarWaves[i];
 
@@ -29,7 +28,8 @@ export default context => {
     drawWave(context, wave);
 
     if (!wave.send) {
-      if(wave.r /2 >= Math.hypot(camera.x - wave.x, camera.y - wave.y)){
+      const waveDelta = wave.r - Math.hypot(camera.x - wave.x, camera.y - wave.y);
+      if(transform(waveDelta) >= Math.hypot(window.innerWidth, window.innerHeight)){
         radarWaves.splice(i, 1);
       }
       continue
@@ -57,7 +57,7 @@ export default context => {
       }
     };
 
-    if(wave.echo && wave.r >= Math.hypot(window.innerWidth, window.innerHeight) * 5) {
+    if(wave.echo && transform(wave.r) > Math.hypot(window.innerWidth, window.innerHeight)) {
       radarWaves.splice(i, 1);
     }
   }
