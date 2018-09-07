@@ -1,4 +1,5 @@
-import { camera, planets } from './models';
+import { camera, planets, stage } from './models';
+import { STAGE_GAME } from './constants';
 import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
 import getObjectRenderer from './getObjectRenderer';
 
@@ -13,16 +14,18 @@ export function drawPlanets(context) {
       closesetDistance = distance;
     }
 
-    drawBackground(context, planet);
+    if (stage.code === STAGE_GAME) {
+      drawBackground(context, planet);
 
-    const { x, y } = transform(planet);
-    const radius = transform(planet.radius);
-    context.fillStyle = planet.color.land;
-    context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI);
-    context.fill();
+      const { x, y } = transform(planet);
+      const radius = transform(planet.radius);
+      context.fillStyle = planet.color.land;
+      context.beginPath();
+      context.arc(x, y, radius, 0, 2 * Math.PI);
+      context.fill();
+    }
   });
-};
+}
 
 export function drawAtmosphere(context) {
   planets.map(planet => {

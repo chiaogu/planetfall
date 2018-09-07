@@ -28,24 +28,27 @@ export default context => {
     drawWave(context, wave);
 
     if (!wave.send) {
-      const waveDelta = wave.r - Math.hypot(camera.x - wave.x, camera.y - wave.y);
-      if(transform(waveDelta) >= Math.hypot(window.innerWidth, window.innerHeight)){
+      if (
+        wave.r / Math.hypot(camera.x - wave.x, camera.y - wave.y) >= 2 &&
+        transform(wave.r - Math.hypot(camera.x - wave.x, camera.y - wave.y)) >=
+          Math.hypot(window.innerWidth, window.innerHeight)
+      ) {
         radarWaves.splice(i, 1);
       }
-      continue
-    };
+      continue;
+    }
 
     for (let j = 0; j < planets.length; j++) {
       const planet = planets[j];
       const { savedPlanets } = objectives;
-      if(savedPlanets[planet.name]) continue;
+      if (savedPlanets[planet.name]) continue;
 
       const satelliteStation = planet.objects.find(object => object[1] === OBJECT_SATELLITE_STATION);
       if (!satelliteStation) continue;
 
       const { x, y } = getPositionOnPlanetSurface(planet, satelliteStation[0]);
       const distance = Math.hypot(camera.x - x, camera.y - y);
-      if(wave.r >= distance && !wave.echo) {
+      if (wave.r >= distance && !wave.echo) {
         wave.echo = true;
         radarWaves.push({
           r: 0,
@@ -55,9 +58,9 @@ export default context => {
         });
         break;
       }
-    };
+    }
 
-    if(wave.echo && transform(wave.r) > Math.hypot(window.innerWidth, window.innerHeight)) {
+    if (wave.echo && transform(wave.r) > Math.hypot(window.innerWidth, window.innerHeight)) {
       radarWaves.splice(i, 1);
     }
   }

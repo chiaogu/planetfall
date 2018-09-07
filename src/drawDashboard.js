@@ -1,8 +1,11 @@
-import { camera, objectives, planets } from './models';
+import { camera, objectives, planets, stage } from './models';
 import { getAngle, isAccelerating, getTheta, getDistanceToPlanetSurface, white } from './utils';
-import { FONT } from './constants';
+import { FONT, STAGE_GAME } from './constants';
 
 export default context => {
+  if(stage.code !== STAGE_GAME) {
+    return;
+  }
   const attrs = [
     ['velocity', (Math.hypot(camera.vx, camera.vy) * 10).toFixed(), 200],
     ['fuel', Math.round(camera.fuel), 100]

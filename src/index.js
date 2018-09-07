@@ -22,10 +22,10 @@ function tick() {
   updateObjective();
   drawStars(context);
   drawAtmosphere(context);
+  drawStage(context);
   drawRadar(context);
   drawPlanets(context);
   drawDashboard(context);
-  drawStage(context);
   drawCharacter(context);
 
   requestAnimationFrame(tick);
