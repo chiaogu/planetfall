@@ -1,5 +1,5 @@
 import { camera, planets, stage } from './models';
-import { STAGE_GAME } from './constants';
+import { STAGE_TITLE } from './constants';
 import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
 import getObjectRenderer from './getObjectRenderer';
 
@@ -14,7 +14,7 @@ export function drawPlanets(context) {
       closesetDistance = distance;
     }
 
-    if (stage.code === STAGE_GAME) {
+    if (stage.code !== STAGE_TITLE) {
       drawBackground(context, planet);
 
       const { x, y } = transform(planet);

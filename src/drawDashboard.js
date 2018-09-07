@@ -1,9 +1,9 @@
 import { camera, objectives, planets, stage } from './models';
 import { getAngle, isAccelerating, getTheta, getDistanceToPlanetSurface, white } from './utils';
-import { FONT, STAGE_GAME } from './constants';
+import { FONT, STAGE_TITLE } from './constants';
 
 export default context => {
-  if(stage.code !== STAGE_GAME) {
+  if(stage.code === STAGE_TITLE) {
     return;
   }
   const attrs = [
@@ -42,7 +42,7 @@ export default context => {
   context.textAlign = 'right';
   context.font = `24px ${FONT}`;
   context.fillStyle = white(0.3);
-  context.fillText(`/13`, shake[0] + window.innerWidth - 24, shake[1] + 50);
+  context.fillText(`/${planets.length}`, shake[0] + window.innerWidth - 24, shake[1] + 50);
   context.font = `48px ${FONT}`;
   context.fillStyle = '#fff';
   context.fillText(
