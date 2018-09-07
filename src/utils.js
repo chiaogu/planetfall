@@ -74,10 +74,16 @@ export function drawImage(context, layers) {
         context.lineTo(x, y);
       }
     });
-    context.fillStyle = layer.color(context);
+    context.fillStyle = typeof layer.color === 'string' ? layer.color : getLinearGradient(context, ...layer.color);
     context.closePath();
     context.fill();
   });
+}
+
+export function getLinearGradient(context, x1, y1, x2,y2, stops) {
+  const gradient = context.createLinearGradient(x1,y1,x2,y2);
+  stops.map(args => gradient.addColorStop(...args));
+  return gradient;
 }
 
 export function white(alpha) {

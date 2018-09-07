@@ -1,4 +1,4 @@
-import { OBJECT_SATELLITE_STATION, STAGE_TITLE } from './constants';
+import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, STAGE_TITLE, STAGE_GAME } from './constants';
 
 export const camera = {
   x: 0,
@@ -21,10 +21,11 @@ export const planets = [
     radius: 2000,
     gravity: 0.05,
     color: {
-      land: '#961F0E',
-      atmosphere: '#D16A20'
+      land: '#091A1E',
+      atmosphere: [[0, '#A2AF69'], [0.02, '#1E375B']]
     },
-    objects: [[90, OBJECT_SATELLITE_STATION, false]]
+    objects: [[90, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[10, OBJECT_BUILDING]]
   },
   {
     name: 'Catlax',
@@ -34,7 +35,7 @@ export const planets = [
     gravity: 0.05,
     color: {
       land: '#555',
-      atmosphere: 'rgba(255,255,255,0.5)'
+      atmosphere: [[0, 'rgba(255,255,255,0.5)']]
     },
     objects: [[200, OBJECT_SATELLITE_STATION, false]]
   },
@@ -46,7 +47,7 @@ export const planets = [
     gravity: 0.02,
     color: {
       land: '#555',
-      atmosphere: '#ff0'
+      atmosphere: [[0, '#ff0']]
     },
     objects: [[180, OBJECT_SATELLITE_STATION, false]]
   }
@@ -61,10 +62,10 @@ export const pressingKeys = {};
 
 export const objectives = {
   savedPlanets: {}
-}
+};
 
 export const radarWaves = [];
 
 export const stage = {
-  code: STAGE_TITLE
+  code: STAGE_GAME
 };

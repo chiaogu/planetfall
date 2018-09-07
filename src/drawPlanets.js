@@ -1,6 +1,6 @@
 import { camera, planets, stage } from './models';
-import { STAGE_TITLE } from './constants';
-import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
+import { STAGE_TITLE, OBJECT_BUILDING } from './constants';
+import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface, getAngle } from './utils';
 import getObjectRenderer from './getObjectRenderer';
 
 export function drawPlanets(context) {
@@ -14,8 +14,9 @@ export function drawPlanets(context) {
       closesetDistance = distance;
     }
 
-    if (stage.code !== STAGE_TITLE) {
+    if (stage.code !== STAGE_TITLE && transform(distance) < Math.hypot(window.innerWidth, window.innerHeight)) {
       drawBackground(context, planet);
+      drawObjects(context, planet);
 
       const { x, y } = transform(planet);
       const radius = transform(planet.radius);
@@ -39,17 +40,34 @@ export function drawAtmosphere(context) {
     context.stroke();
 
     const grd = context.createRadialGradient(x, y, radius, x, y, radius * 2);
-    grd.addColorStop(0, planet.color.atmosphere);
+    planet.color.atmosphere.map(color => grd.addColorStop(color[0], color[1]));
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     context.fillStyle = grd;
     context.fill();
   });
 }
 
+function drawObjects(context, planet) {
+  if (planet.objects) {
+    planet.objects.map(([azimuth, id, state]) =>
+      getObjectRenderer(id)(context, (x, y) => transform(getPositionOnPlanetSurface(planet, azimuth, { x, y })), state)
+    );
+  }
+}
+
 function drawBackground(context, planet) {
-  planet.objects.map(([azimuth, id, state]) =>
-    getObjectRenderer(id)(context, state, (x, y) => {
-      return transform(getPositionOnPlanetSurface(planet, azimuth, { x, y }));
-    })
-  );
+  // const azimuth = getAngle(planet, camera);
+  // console.log(planet)
+  if (planet.bgs) {
+    planet.bgs.map(([gap, id]) =>
+      Array(360 / gap)
+        .fill()
+        .map((_, index) => {
+          const azimuth = index * gap;
+          return getObjectRenderer(id)(context, (x, y) =>
+            transform(getPositionOnPlanetSurface(planet, azimuth, { x, y }))
+          );
+        })
+    );
+  }
 }

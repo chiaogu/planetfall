@@ -2,7 +2,7 @@ import { drawImage, transform } from './utils';
 
 const LAYERS = [
   {
-    color: context => '#fff',
+    color: '#fff',
     paths: [
       [7.2, -49.4],
       [4.8, -47],
@@ -31,7 +31,7 @@ const LAYERS = [
     ]
   },
   {
-    color: context => '#eee',
+    color: '#eee',
     paths: [
       [8.5, -50],
       [9, -44.2],
@@ -60,7 +60,7 @@ const LAYERS = [
     ]
   },
   {
-    color: context => '#eee',
+    color: '#eee',
     paths: [
       [-10.8, -22.2],
       [-9.8, -36.8],
@@ -80,7 +80,7 @@ const LAYERS = [
 let _radius = 20;
 let delta = 1;
 
-export default (context, isOffline, transformOnPlanet) => {
+export default (context, transformOnPlanet, isOffline) => {
   drawImage(
     context,
     LAYERS.map(({ color, paths }) => ({
