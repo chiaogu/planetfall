@@ -25,7 +25,7 @@ export const planets = [
       atmosphere: [[0, '#4F3C6A'], [0.06, '#0E2A48']]
     },
     objects: [[30, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[5, OBJECT_BUILDING]]
+    bgs: [[1, 0, OBJECT_BUILDING, 0.2], [3, 2, OBJECT_BUILDING, 0.5], [6, 3, OBJECT_BUILDING, 1]]
   },
   {
     name: 'Catlax',
@@ -38,7 +38,7 @@ export const planets = [
       atmosphere: [[0, 'rgba(255,255,255,0.5)']]
     },
     objects: [[200, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[30, OBJECT_BUILDING]]
+    bgs: [[50, 0, OBJECT_BUILDING]]
   },
   {
     name: 'Kapbula',

@@ -56,6 +56,19 @@ export function getPositionOnPlanetSurface(planet, azimuth, point) {
   };
 }
 
+export function transformColorStops(color, transformFunc) {
+  let _color;
+  if (typeof color === 'string') {
+    _color = color;
+  } else {
+    const [x1, y1, x2, y2, stops] = color;
+    const { x: _x1, y: _y1 } = transformFunc(x1, y1);
+    const { x: _x2, y: _y2 } = transformFunc(x2, y2);
+    _color = [_x1, _y1, _x2, _y2, stops];
+  }
+  return _color;
+}
+
 export function isAccelerating() {
   return (
     (pressingKeys[38] || pressingKeys[40]) &&
@@ -88,10 +101,4 @@ export function getLinearGradient(context, x1, y1, x2,y2, stops) {
 
 export function white(alpha) {
   return `rgba(255,255,255,${alpha})`;
-}
-
-export function getAngleDiff(angle1, angle2) {
-  let rDiff = 360 - angle1 - angle2;
-  if (rDiff < 0) rDiff += 360;
-  return rDiff;
 }

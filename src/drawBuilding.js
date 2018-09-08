@@ -1,31 +1,35 @@
-import { drawImage, transform } from './utils';
+import { drawImage, transform, transformColorStops } from './utils';
 
-const LAYERS = [
-  {
-    color: [0, -100, 1, 1, [[0, '#1E375B'], [1, '#A2AF69']]],
-    paths: [[-30, 10], [30, 10], [30, -200], [20, -220], [-30, -200]]
-  },
-  {
-    color: [0, -100, 1, 1, [[0, '#223E59'], [1, '#5C9663']]],
-    paths: [[20, -220], [20, 10], [30, 10], [30, -200]]
-  }
-];
-
-export default (context, transformOnPlanet, azimuth) => {
+export default (context, transformOnPlanet, [azimuth, scale]) => {
+  const height = 200 * scale;
+  const width = 120 * scale;
+  const windowSize = 5 * scale;
+  const windowGap = 20 * scale;
   drawImage(
     context,
-    LAYERS.map(({ color, paths }) => {
-      let _color;
-      if (typeof color === 'string') {
-        _color = color;
-      } else {
-        const [x1, y1, x2, y2, stops] = color;
-        const { x: _x1, y: _y1 } = transformOnPlanet(x1, y1);
-        const { x: _x2, y: _y2 } = transformOnPlanet(x2, y2);
-        _color = [_x1, _y1, _x2, _y2, stops];
-      }
+    [
+      {
+        color: [0, -height / 2, 1, 10, [[0, `rgb(30,55,91)`], [1, `rgb(101,121,101)`]]],
+        paths: [[-width / 2, 10], [-width / 2, -height], [width / 2, -height], [width / 2, 10]]
+      },
+      ...Array(20)
+        .fill()
+        .map((_, index) => {
+          const xOffset = windowGap * (index % 5);
+          const yOffset = windowGap * (Math.round(index / 5));
+          return {
+            color: '#fff',
+            paths: [
+              [-width / 2 + xOffset, -height + yOffset],
+              [-width / 2 + xOffset + windowSize * 2, -height + yOffset],
+              [-width / 2 + xOffset + windowSize * 2, -height + windowSize + yOffset],
+              [-width / 2 + xOffset, -height + windowSize + yOffset]
+            ]
+          };
+        })
+    ].map(({ color, paths }) => {
       return {
-        color: _color,
+        color: transformColorStops(color, transformOnPlanet),
         paths: paths.map(([x, y]) => transformOnPlanet(x, y))
       };
     })

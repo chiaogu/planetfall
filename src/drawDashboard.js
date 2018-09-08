@@ -18,7 +18,7 @@ export default context => {
 
   context.shadowColor = '#fff';
   context.shadowBlur = 20;
-  attrs.forEach(([name, value, denominator], index) => {
+  attrs.map(([name, value, denominator], index) => {
     const margin = 48;
 
     context.font = `16px ${FONT}`;

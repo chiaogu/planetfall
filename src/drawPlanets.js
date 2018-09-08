@@ -24,7 +24,7 @@ export function drawPlanets(context) {
     }
   });
 
-  if(closesetPlanet && closesetPlanet !== camera.planet){
+  if (closesetPlanet && closesetPlanet !== camera.planet) {
     camera.landingAzimuth = getAngle(closesetPlanet, camera);
   }
   camera.planet = closesetPlanet;
@@ -66,17 +66,25 @@ export function drawObjects(context) {
 export function drawBackground(context) {
   planets.map(planet => {
     if (planet.bgs && isPlanetVisible(planet)) {
-      console.log(camera.landingAzimuth - getAngle(planet, camera))
-      planet.bgs.map(([gap, id]) =>
-        Array(360 / gap)
+      let angleDiff = getAngle(planet, camera) - camera.landingAzimuth;
+      if (angleDiff < 0) angleDiff += 360;
+      if (angleDiff > 180) angleDiff = angleDiff - 360;
+      angleDiff = angleDiff || 0;
+      planet.bgs.map(([gap, offset, id, scale = 1]) =>
+        Array(Math.round(360 / gap))
           .fill()
-          .map((_, index) =>
-            getObjectRenderer(id)(
-              context,
-              (x, y) => transform(getPositionOnPlanetSurface(planet, index * gap, { x, y })),
-              index * gap
-            )
-          )
+          .map((_, index) => {
+            const azimuth = (index * gap + offset) % 360;
+            const { x, y } = getPositionOnPlanetSurface(planet, azimuth + angleDiff * (1 - scale));
+            const render = getObjectRenderer(id);
+            if (render && transform(Math.hypot(x - camera.x, y - camera.y)) < Math.hypot(window.innerWidth, window.innerHeight)) {
+              render(
+                context,
+                (x, y) => transform(getPositionOnPlanetSurface(planet, azimuth + angleDiff * (1 - scale), { x, y })),
+                [azimuth, scale]
+              );
+            }
+          })
       );
     }
   });
