@@ -1,7 +1,7 @@
 import { pressingKeys } from './models';
 import updateCamera from './updateCamera';
 import updateObjective from './updateObjective';
-import { drawPlanets, drawAtmosphere } from './drawPlanets';
+import { drawPlanets, drawAtmosphere, drawObjects, drawBackground } from './drawPlanets';
 import drawCharacter from './drawCharacter';
 import drawStars from './drawStars';
 import drawDashboard from './drawDashboard';
@@ -22,6 +22,8 @@ function tick() {
   updateObjective();
   drawStars(context);
   drawAtmosphere(context);
+  drawBackground(context);
+  drawObjects(context);
   drawStage(context);
   drawRadar(context);
   drawPlanets(context);

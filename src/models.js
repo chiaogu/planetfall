@@ -22,10 +22,10 @@ export const planets = [
     gravity: 0.05,
     color: {
       land: '#091A1E',
-      atmosphere: [[0, '#A2AF69'], [0.02, '#1E375B']]
+      atmosphere: [[0, '#4F3C6A'], [0.06, '#0E2A48']]
     },
-    objects: [[90, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[10, OBJECT_BUILDING]]
+    objects: [[30, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[5, OBJECT_BUILDING]]
   },
   {
     name: 'Catlax',
@@ -37,7 +37,8 @@ export const planets = [
       land: '#555',
       atmosphere: [[0, 'rgba(255,255,255,0.5)']]
     },
-    objects: [[200, OBJECT_SATELLITE_STATION, false]]
+    objects: [[200, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[30, OBJECT_BUILDING]]
   },
   {
     name: 'Kapbula',

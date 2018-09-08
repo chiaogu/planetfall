@@ -2,30 +2,30 @@ import { drawImage, transform } from './utils';
 
 const LAYERS = [
   {
-    _color: [0, -100, 1, 1, [[0, '#0E2A48'], [1, '#4F3C6A']]],
-    paths: [[-20, 0], [20, 0], [20, -100], [-20, -100]]
+    color: [0, -100, 1, 1, [[0, '#1E375B'], [1, '#A2AF69']]],
+    paths: [[-30, 10], [30, 10], [30, -200], [20, -220], [-30, -200]]
   },
   {
-    _color: '#eee',
-    paths: []
+    color: [0, -100, 1, 1, [[0, '#223E59'], [1, '#5C9663']]],
+    paths: [[20, -220], [20, 10], [30, 10], [30, -200]]
   }
 ];
 
-export default (context, transformOnPlanet, state) => {
+export default (context, transformOnPlanet, azimuth) => {
   drawImage(
     context,
-    LAYERS.map(({ _color, paths }) => {
-      let color;
-      if (typeof _color === 'string') {
-        color = _color;
+    LAYERS.map(({ color, paths }) => {
+      let _color;
+      if (typeof color === 'string') {
+        _color = color;
       } else {
-        const [x1, y1, x2, y2, stops] = _color;
+        const [x1, y1, x2, y2, stops] = color;
         const { x: _x1, y: _y1 } = transformOnPlanet(x1, y1);
         const { x: _x2, y: _y2 } = transformOnPlanet(x2, y2);
-        color = [_x1, _y1, _x2, _y2, stops];
+        _color = [_x1, _y1, _x2, _y2, stops];
       }
       return {
-        color,
+        color: _color,
         paths: paths.map(([x, y]) => transformOnPlanet(x, y))
       };
     })

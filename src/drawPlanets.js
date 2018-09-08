@@ -4,20 +4,17 @@ import { transform, getDistanceToPlanetSurface, getPositionOnPlanetSurface, getA
 import getObjectRenderer from './getObjectRenderer';
 
 export function drawPlanets(context) {
-  camera.planet = undefined;
   let closesetDistance = Number.MAX_VALUE;
+  let closesetPlanet = undefined;
 
   planets.map(planet => {
     const distance = getDistanceToPlanetSurface(planet);
     if (distance < planet.radius && distance < closesetDistance) {
-      camera.planet = planet;
+      closesetPlanet = planet;
       closesetDistance = distance;
     }
 
-    if (stage.code !== STAGE_TITLE && transform(distance) < Math.hypot(window.innerWidth, window.innerHeight)) {
-      drawBackground(context, planet);
-      drawObjects(context, planet);
-
+    if (isPlanetVisible(planet)) {
       const { x, y } = transform(planet);
       const radius = transform(planet.radius);
       context.fillStyle = planet.color.land;
@@ -26,6 +23,11 @@ export function drawPlanets(context) {
       context.fill();
     }
   });
+
+  if(closesetPlanet && closesetPlanet !== camera.planet){
+    camera.landingAzimuth = getAngle(closesetPlanet, camera);
+  }
+  camera.planet = closesetPlanet;
 }
 
 export function drawAtmosphere(context) {
@@ -47,27 +49,40 @@ export function drawAtmosphere(context) {
   });
 }
 
-function drawObjects(context, planet) {
-  if (planet.objects) {
-    planet.objects.map(([azimuth, id, state]) =>
-      getObjectRenderer(id)(context, (x, y) => transform(getPositionOnPlanetSurface(planet, azimuth, { x, y })), state)
-    );
-  }
+export function drawObjects(context) {
+  planets.map(planet => {
+    if (planet.objects && isPlanetVisible(planet)) {
+      planet.objects.map(([azimuth, id, state]) =>
+        getObjectRenderer(id)(
+          context,
+          (x, y) => transform(getPositionOnPlanetSurface(planet, azimuth, { x, y })),
+          state
+        )
+      );
+    }
+  });
 }
 
-function drawBackground(context, planet) {
-  // const azimuth = getAngle(planet, camera);
-  // console.log(planet)
-  if (planet.bgs) {
-    planet.bgs.map(([gap, id]) =>
-      Array(360 / gap)
-        .fill()
-        .map((_, index) => {
-          const azimuth = index * gap;
-          return getObjectRenderer(id)(context, (x, y) =>
-            transform(getPositionOnPlanetSurface(planet, azimuth, { x, y }))
-          );
-        })
-    );
-  }
+export function drawBackground(context) {
+  planets.map(planet => {
+    if (planet.bgs && isPlanetVisible(planet)) {
+      console.log(camera.landingAzimuth - getAngle(planet, camera))
+      planet.bgs.map(([gap, id]) =>
+        Array(360 / gap)
+          .fill()
+          .map((_, index) =>
+            getObjectRenderer(id)(
+              context,
+              (x, y) => transform(getPositionOnPlanetSurface(planet, index * gap, { x, y })),
+              index * gap
+            )
+          )
+      );
+    }
+  });
+}
+
+function isPlanetVisible(planet) {
+  const distance = getDistanceToPlanetSurface(planet);
+  return stage.code !== STAGE_TITLE && transform(distance) < Math.hypot(window.innerWidth, window.innerHeight);
 }

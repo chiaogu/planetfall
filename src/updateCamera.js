@@ -1,5 +1,5 @@
 import { camera, pressingKeys } from './models';
-import { getAngle, getTheta, getDistanceToPlanetSurface } from './utils';
+import { getAngle, getTheta, getDistanceToPlanetSurface, getAngleDiff } from './utils';
 const A = 0.1;
 const AR = 0.03;
 
@@ -35,8 +35,7 @@ function updateOnPlanet() {
   }
 
   camera.zoom = 1 + 4 * distanceRatio * distanceRatio * distanceRatio;
-  let rDiff = 360 - gravityAngle - camera.rotaion;
-  if (rDiff < 0) rDiff += 360;
+  const rDiff = getAngleDiff(gravityAngle, camera.rotaion);
   if (rDiff > 10 && rDiff < 180) {
     camera.rotaion += 10 * distanceRatio * distanceRatio;
     camera.rotaion %= 360;

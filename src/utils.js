@@ -89,3 +89,9 @@ export function getLinearGradient(context, x1, y1, x2,y2, stops) {
 export function white(alpha) {
   return `rgba(255,255,255,${alpha})`;
 }
+
+export function getAngleDiff(angle1, angle2) {
+  let rDiff = 360 - angle1 - angle2;
+  if (rDiff < 0) rDiff += 360;
+  return rDiff;
+}
