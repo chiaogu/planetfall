@@ -24,8 +24,8 @@ export const planets = [
       land: '#091A1E',
       atmosphere: [[0, '#4F3C6A'], [0.06, '#0E2A48']]
     },
-    objects: [[30, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[1, 0, OBJECT_BUILDING, 0.2], [3, 2, OBJECT_BUILDING, 0.5], [6, 3, OBJECT_BUILDING, 1]]
+    objects: [[0, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[2, 0, OBJECT_BUILDING, 0.2], [3, 2, OBJECT_BUILDING, 0.5], [6, 3, OBJECT_BUILDING, 1]]
   },
   {
     name: 'Catlax',

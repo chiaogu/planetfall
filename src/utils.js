@@ -79,6 +79,10 @@ export function isAccelerating() {
 
 export function drawImage(context, layers) {
   return layers.map(layer => {
+    if(layer.shadow) {
+      context.shadowColor = layer.shadow[0];
+      context.shadowBlur = layer.shadow[1];
+    }
     context.beginPath();
     layer.paths.map(({x, y}, index) => {
       if (index === 0) {
@@ -90,6 +94,7 @@ export function drawImage(context, layers) {
     context.fillStyle = typeof layer.color === 'string' ? layer.color : getLinearGradient(context, ...layer.color);
     context.closePath();
     context.fill();
+    context.shadowBlur = 0;
   });
 }
 

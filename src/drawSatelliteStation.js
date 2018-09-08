@@ -92,7 +92,7 @@ export default (context, transformOnPlanet, isOffline) => {
   const { x, y } = transformOnPlanet(-9.8, -36.8);
   const radius = transform(_radius * (isOffline ? 0.8 : 1));
   const grd = context.createRadialGradient(x, y, 0, x, y, radius);
-  const color = isOffline ? [255,0,0] : [0,255,0];
+  const color = isOffline ? [254,0,24] : [19,167,76];
   grd.addColorStop(0, '#fff');
   grd.addColorStop(0.3, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.5)`);
   grd.addColorStop(1, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0)`);
