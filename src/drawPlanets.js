@@ -70,7 +70,7 @@ export function drawBackground(context) {
       if (angleDiff < 0) angleDiff += 360;
       if (angleDiff > 180) angleDiff = angleDiff - 360;
       angleDiff = angleDiff || 0;
-      planet.bgs.map(([gap, offset, id, scale = 1, distance = 0, args = []]) =>
+      planet.bgs.map(([gap, offset, id, scale = 1, distance = 0, ...args]) =>
         Array(Math.round(360 / gap))
           .fill()
           .map((_, index) => {
@@ -90,7 +90,7 @@ export function drawBackground(context) {
                   });
                   return transform(position);
                 },
-                [azimuth, scale, ...args]
+                [azimuth, scale, args]
               );
             }
           })

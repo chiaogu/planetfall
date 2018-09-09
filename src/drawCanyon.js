@@ -131,18 +131,18 @@ const layer3 = [
   [7.8, -15]
 ];
 
-export default (context, transformOnPlanet, [azimuth, scale]) => {
+export default (context, transformOnPlanet, [azimuth, scale, color]) => {
   drawImageOnPlanet(context, transformOnPlanet, [
     {
-      color: '#666',
+      color: color[0],
       paths: layer1
     },
     {
-      color: [0,-30,0,10,[[0,'#333'],[1,'#555']]],
+      color: [0,-30,0,10,[[0,color[1]],[1,color[2]]]],
       paths: layer2
     },
     {
-      color: [0,-30,0,10,[[0,'#333'],[1,'#555']]],
+      color: [0,-30,0,10,[[0,color[1],[1,color[2]]]]],
       paths: layer3
     }
   ]);
