@@ -3,6 +3,7 @@ export const OBJECT_BUILDING = 1;
 export const OBJECT_DUNE = 2;
 export const OBJECT_CANYON = 3;
 export const OBJECT_TREE = 4;
+export const OBJECT_BUILDING_2 = 5;
 
 export const STAGE_TITLE = 0;
 export const STAGE_GAME = 1;

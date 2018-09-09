@@ -4,6 +4,7 @@ import {
   OBJECT_DUNE,
   OBJECT_CANYON,
   OBJECT_TREE,
+  OBJECT_BUILDING_2,
   STAGE_TITLE,
   STAGE_GAME,
   KAPBULA_DUNE_COLOR,
@@ -35,10 +36,10 @@ export const planets = [
     gravity: 0.05,
     color: {
       land: '#091A1E',
-      atmosphere: [[0, '#4F3C6A'], [0.06, '#0E2A48']]
+      atmosphere: [[0, '#4F3C6A'], [0.1, '#0E2A48']]
     },
     objects: [[0, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[2, 0, OBJECT_BUILDING, 0.2, 0.8], [3, 2, OBJECT_BUILDING, 0.5, 0.5], [6, 3, OBJECT_BUILDING, 1, 0.3]]
+    bgs: [[2, 0, OBJECT_BUILDING, 1.75, 0.7], [6, 3, OBJECT_BUILDING_2, 2.75, 0.6], [3, 2, OBJECT_BUILDING, 2.25, 0.5], [6, 3, OBJECT_BUILDING_2, 3.25, 0.3]]
   },
   {
     name: 'Catlax',
