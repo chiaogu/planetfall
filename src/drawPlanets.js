@@ -70,17 +70,26 @@ export function drawBackground(context) {
       if (angleDiff < 0) angleDiff += 360;
       if (angleDiff > 180) angleDiff = angleDiff - 360;
       angleDiff = angleDiff || 0;
-      planet.bgs.map(([gap, offset, id, scale = 1, args=[]]) =>
+      planet.bgs.map(([gap, offset, id, scale = 1, distance = 0, args = []]) =>
         Array(Math.round(360 / gap))
           .fill()
           .map((_, index) => {
             const azimuth = (index * gap + offset) % 360;
-            const { x, y } = getPositionOnPlanetSurface(planet, azimuth + angleDiff * (1 - scale));
+            const { x, y } = getPositionOnPlanetSurface(planet, azimuth + angleDiff * distance);
             const render = getObjectRenderer(id);
-            if (render && transform(Math.hypot(x - camera.x, y - camera.y)) < Math.hypot(window.innerWidth, window.innerHeight)) {
+            if (
+              render &&
+              transform(Math.hypot(x - camera.x, y - camera.y)) < Math.hypot(window.innerWidth, window.innerHeight)
+            ) {
               render(
                 context,
-                (x, y) => transform(getPositionOnPlanetSurface(planet, azimuth + angleDiff * (1 - scale), { x, y })),
+                (x, y) => {
+                  const position = getPositionOnPlanetSurface(planet, azimuth + angleDiff * distance, {
+                    x: x * scale,
+                    y: y * scale
+                  });
+                  return transform(position);
+                },
                 [azimuth, scale, ...args]
               );
             }
