@@ -31,20 +31,20 @@ export const planets = [
   {
     name: 'Aolea',
     x: 0,
-    y: 2010,
+    y: 2020,
     radius: 2000,
     gravity: 0.05,
     color: {
       land: '#091A1E',
       atmosphere: [[0, '#4F3C6A'], [0.1, '#0E2A48']]
     },
-    objects: [[0, OBJECT_SATELLITE_STATION, false]],
+    objects: [[30, OBJECT_SATELLITE_STATION, false]],
     bgs: [[2, 0, OBJECT_BUILDING, 1.75, 0.7], [6, 3, OBJECT_BUILDING_2, 2.75, 0.6], [3, 2, OBJECT_BUILDING, 2.25, 0.5], [6, 3, OBJECT_BUILDING_2, 3.25, 0.3]]
   },
   {
     name: 'Catlax',
-    x: -200,
-    y: -2000,
+    x: -600,
+    y: -1900,
     radius: 200,
     gravity: 0.05,
     color: {
@@ -63,7 +63,7 @@ export const planets = [
     name: 'Kapbula',
     x: 0,
     y: -12010,
-    radius: 3000,
+    radius: 2000,
     gravity: 0.035,
     color: {
       land: '#2E284B',

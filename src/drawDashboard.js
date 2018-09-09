@@ -47,7 +47,7 @@ export default context => {
   context.fillStyle = '#fff';
   context.fillText(
     Object.keys(objectives.savedPlanets).filter(planet => objectives.savedPlanets[planet]).length,
-    shake[0] + window.innerWidth - 68,
+    shake[0] + window.innerWidth - 52,
     shake[1] + 50
   );
 

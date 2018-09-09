@@ -1,20 +1,22 @@
-import { STAGE_TITLE, STAGE_GAME, STAGE_ENDING, FONT } from './constants';
+import { STAGE_TITLE, STAGE_GAME, STAGE_ENDING, FONT, OBJECT_SATELLITE_STATION } from './constants';
 import { camera, pressingKeys, stage, objectives, planets } from './models';
+import { isAccelerating, getPositionOnPlanetSurface } from './utils';
 
-const description = [
-  'The terrorists broke into the planetary defense system',
-  'in an attempt to destroy the 13 planets in the system.',
-  'The only way to stop it is to take the satellite station',
-  'on the planet offline.'
-];
+const description = 'Find the satellite station on each planet and take it offline';
 
-let _stage = STAGE_TITLE;
+let hasMoved = false;
+let hasJump = false;
+let hasLiftoff = false;
+let hasEmitRadar = false;
+let hasTurnOffStation = false;
 
 export default context => {
   if (stage.code === STAGE_TITLE) {
     drawTitle(context);
   } else if (stage.code === STAGE_ENDING) {
     drawEnding(context);
+  } else if (stage.code === STAGE_GAME) {
+    drawTutorial(context);
   }
 
   if (stage.code === STAGE_TITLE && pressingKeys[13]) {
@@ -31,9 +33,45 @@ export default context => {
       location.reload();
     }
   }
-
-  _stage = stage.code;
 };
+
+function drawTutorial(context) {
+  if(!hasMoved && (pressingKeys[37] || pressingKeys[39])) {
+    hasMoved = true;
+  } else if(!hasJump && pressingKeys[38]) {
+    hasJump = true;
+  } else if(!hasLiftoff &&isAccelerating()) {
+    hasLiftoff = true;
+  } else if(!hasEmitRadar && pressingKeys[32]) {
+    hasEmitRadar = true;
+  } else if(!hasTurnOffStation && isNearStaelliteStation() && pressingKeys[32]) {
+    hasTurnOffStation = true;
+  }
+
+  let text;
+  if (!hasMoved) {
+    text = '[←][→] Move'
+  } else if (!hasJump) {
+    text = '[↑] Jump'
+  } else if (!hasLiftoff) {
+    text = '[Hold ↑] Liftoff'
+  } else if (!hasEmitRadar) {
+    text = '[Space] Emit Radar Wave'
+  } else if (!hasTurnOffStation && isNearStaelliteStation()) {
+    text = '[Space] Take Satellite Station Offline'
+  } else {
+    return;
+  }
+
+  context.shadowColor = '#fff';
+  context.shadowBlur = 20;
+  context.textAlign = 'center';
+  context.fillStyle = '#fff';
+  context.font = `24px ${FONT}`;
+  context.fillText(text, window.innerWidth / 2, window.innerHeight * 0.84);
+  context.shadowBlur = 0;
+  context.textAlign = 'left';
+}
 
 function drawTitle(context) {
   camera.vx = 0;
@@ -50,16 +88,13 @@ function drawTitle(context) {
   context.fillStyle = '#fff';
 
   context.font = `72px ${FONT}`;
-  context.fillText('G R A V I T Y', window.innerWidth / 2, window.innerHeight / 6);
+  context.fillText('G R A V I T Y', window.innerWidth / 2, window.innerHeight * 0.167);
 
   context.font = `24px ${FONT}`;
   context.fillText('[Enter] Start', window.innerWidth / 2, window.innerHeight * 0.84);
 
   context.font = `16px ${FONT}`;
-  context.textAlign = 'left';
-  description.map((text, index) =>
-    context.fillText(text, window.innerWidth / 2 - 270, window.innerHeight * 0.66 + 20 * index)
-  );
+  context.fillText(description, window.innerWidth / 2, window.innerHeight * 0.74);
 
   context.shadowBlur = 0;
 }
@@ -87,4 +122,15 @@ function drawEnding(context) {
 
   context.shadowBlur = 0;
   context.textAlign = 'left';
+}
+
+function isNearStaelliteStation() {
+  if(camera.planet) {
+    const satelliteStation = camera.planet.objects.find(object => object[1] === OBJECT_SATELLITE_STATION);
+    const satelliteStationPosition = getPositionOnPlanetSurface(camera.planet, satelliteStation[0]);
+    const distance = Math.hypot(camera.x - satelliteStationPosition.x, camera.y - satelliteStationPosition.y);
+    return distance < 20;
+  } else {
+    return false;
+  }
 }

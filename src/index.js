@@ -24,9 +24,9 @@ function tick() {
   drawAtmosphere(context);
   drawBackground(context);
   drawObjects(context);
+  drawPlanets(context);
   drawStage(context);
   drawRadar(context);
-  drawPlanets(context);
   drawDashboard(context);
   drawCharacter(context);
 
