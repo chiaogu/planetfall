@@ -6,7 +6,7 @@ export default (context, transformOnPlanet, [azimuth, scale]) => {
   const root = 20;
   drawImageOnPlanet(context, transformOnPlanet, [
     {
-      color: [0, 1, -width / 2, 1, [[0, '#4F4874'], [0.5, '#905778']]],
+      color: [0, 1, -width / 2, 1, [[0, '#4F4874'], [1, '#905778']]],
       paths: [[-width / 2, root], [0, -height], [width / 2, root]]
     },
     {

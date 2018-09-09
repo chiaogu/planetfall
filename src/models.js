@@ -1,4 +1,4 @@
-import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, STAGE_TITLE, STAGE_GAME } from './constants';
+import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, OBJECT_CANYON, STAGE_TITLE, STAGE_GAME } from './constants';
 
 export const camera = {
   x: 0,
@@ -31,21 +31,21 @@ export const planets = [
     name: 'Catlax',
     x: -200,
     y: -2000,
-    radius: 100,
+    radius: 200,
     gravity: 0.05,
     color: {
       land: '#555',
-      atmosphere: [[0, 'rgba(255,255,255,0.5)']]
+      atmosphere: [[0, 'rgba(255,255,255,0.3)']]
     },
     objects: [[200, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[50, 0, OBJECT_BUILDING]]
+    bgs: [[30, 0, OBJECT_CANYON, 1, 0]]
   },
   {
     name: 'Kapbula',
     x: 0,
     y: -12010,
-    radius: 2000,
-    gravity: 0.02,
+    radius: 3000,
+    gravity: 0.035,
     color: {
       land: '#2E284B',
       atmosphere: [[0, '#FF9577'], [0.03, '#FF6D5B'], [0.2, '#50456E']]
