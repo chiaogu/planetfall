@@ -1,6 +1,15 @@
-import { STAGE_TITLE, STAGE_GAME, STAGE_ENDING, FONT, OBJECT_SATELLITE_STATION } from './constants';
+import {
+  STAGE_TITLE,
+  STAGE_GAME,
+  STAGE_ENDING,
+  STAGE_OVER,
+  FONT,
+  OBJECT_SATELLITE_STATION,
+  OVER_REASON_CRASH,
+  OVER_REASON_RUNNING_OUT_OF_FUEL
+} from './constants';
 import { camera, pressingKeys, stage, objectives, planets } from './models';
-import { isAccelerating, getPositionOnPlanetSurface } from './utils';
+import { isAccelerating, getPositionOnPlanetSurface, getDistanceToPlanetSurface } from './utils';
 
 const description = 'Find the satellite station on each planet and take it offline';
 
@@ -10,6 +19,9 @@ let hasLiftoff = false;
 let hasEmitRadar = false;
 let hasTurnOffStation = false;
 
+let isGameOver = false;
+let gameOverScreenOpacity = 0;
+
 export default context => {
   if (stage.code === STAGE_TITLE) {
     drawTitle(context);
@@ -17,6 +29,8 @@ export default context => {
     drawEnding(context);
   } else if (stage.code === STAGE_GAME) {
     drawTutorial(context);
+  } else if (stage.code === STAGE_OVER) {
+    drawGameOver(context);
   }
 
   if (stage.code === STAGE_TITLE && pressingKeys[13]) {
@@ -28,37 +42,88 @@ export default context => {
   ) {
     stage.code = STAGE_ENDING;
     stage.endTime = Date.now();
-  } else if (stage.code === STAGE_ENDING) {
+  } else if (stage.code === STAGE_ENDING || stage.code === STAGE_OVER) {
     if (pressingKeys[82]) {
       location.reload();
     }
   }
+
+  if (camera.planet && getDistanceToPlanetSurface(camera.planet) <= 0 && Math.hypot(camera.vx, camera.vy) > 10) {
+    stage.code = STAGE_OVER;
+    stage.reason = OVER_REASON_CRASH;
+  } else if (!camera.planet && camera.fuel === 0) {
+    stage.code = STAGE_OVER;
+    stage.reason = OVER_REASON_RUNNING_OUT_OF_FUEL;
+  }
+
+  if(stage.code === STAGE_OVER && camera.fuel > 0) {
+    stage.code = STAGE_GAME;
+  }
 };
 
+function drawGameOver(context) {
+  if (stage.reason === OVER_REASON_CRASH) {
+    camera.vx = 0;
+    camera.vy = 0;
+    camera.vr = 0;
+
+    if (!isGameOver) {
+      isGameOver = true;
+      gameOverScreenOpacity = 1;
+    }
+    gameOverScreenOpacity -= 0.005;
+
+    if (gameOverScreenOpacity >= 0) {
+      context.fillStyle = `rgba(255,255,255,${gameOverScreenOpacity})`;
+      context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  }
+
+  context.shadowColor = '#fff';
+  context.shadowBlur = 20;
+  context.textAlign = 'center';
+  context.fillStyle = '#fff';
+
+  context.font = `24px ${FONT}`;
+  let text;
+  if (stage.reason === OVER_REASON_CRASH) {
+    text = 'You must land carefully';
+  } else if (stage.reason === OVER_REASON_RUNNING_OUT_OF_FUEL) {
+    text = 'Running out of fuel';
+  }
+  context.fillText(text, window.innerWidth / 2, window.innerHeight / 6);
+
+  context.font = `24px ${FONT}`;
+  context.fillText(`[R] Restart`, window.innerWidth / 2, window.innerHeight / 6 + 112);
+
+  context.shadowBlur = 0;
+  context.textAlign = 'left';
+}
+
 function drawTutorial(context) {
-  if(!hasMoved && (pressingKeys[37] || pressingKeys[39])) {
+  if (!hasMoved && (pressingKeys[37] || pressingKeys[39])) {
     hasMoved = true;
-  } else if(!hasJump && pressingKeys[38]) {
+  } else if (!hasJump && pressingKeys[38]) {
     hasJump = true;
-  } else if(!hasLiftoff &&isAccelerating()) {
+  } else if (!hasLiftoff && isAccelerating()) {
     hasLiftoff = true;
-  } else if(!hasEmitRadar && pressingKeys[32]) {
+  } else if (!hasEmitRadar && pressingKeys[32]) {
     hasEmitRadar = true;
-  } else if(!hasTurnOffStation && isNearStaelliteStation() && pressingKeys[32]) {
+  } else if (!hasTurnOffStation && isNearStaelliteStation() && pressingKeys[32]) {
     hasTurnOffStation = true;
   }
 
   let text;
   if (!hasMoved) {
-    text = '[←][→] Move'
+    text = '[←][→] Move';
   } else if (!hasJump) {
-    text = '[↑] Jump'
+    text = '[↑] Jump';
   } else if (!hasLiftoff) {
-    text = '[Hold ↑] Liftoff'
+    text = '[Hold ↑] Liftoff';
   } else if (!hasEmitRadar) {
-    text = '[Space] Emit Radar Wave'
+    text = '[Space] Emit Radar Wave';
   } else if (!hasTurnOffStation && isNearStaelliteStation()) {
-    text = '[Space] Take Satellite Station Offline'
+    text = '[Space] Take Satellite Station Offline';
   } else {
     return;
   }
@@ -125,7 +190,7 @@ function drawEnding(context) {
 }
 
 function isNearStaelliteStation() {
-  if(camera.planet) {
+  if (camera.planet) {
     const satelliteStation = camera.planet.objects.find(object => object[1] === OBJECT_SATELLITE_STATION);
     const satelliteStationPosition = getPositionOnPlanetSurface(camera.planet, satelliteStation[0]);
     const distance = Math.hypot(camera.x - satelliteStationPosition.x, camera.y - satelliteStationPosition.y);

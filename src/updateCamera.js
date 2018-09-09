@@ -1,10 +1,11 @@
-import { camera, pressingKeys, character } from './models';
+import { camera, pressingKeys, character, stage } from './models';
 import { getAngle, getTheta, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
+import { STAGE_OVER, OVER_REASON_RUNNING_OUT_OF_FUEL } from './constants';
 const A = 0.1;
 const AR = 0.03;
 
 export default () => {
-  if (camera.planet) {
+  if (camera.planet && (stage.code !== STAGE_OVER || stage.reason === OVER_REASON_RUNNING_OUT_OF_FUEL)) {
     updateOnPlanet();
   } else {
     updateInSpace();
@@ -49,10 +50,10 @@ function updateOnPlanet() {
   }
 
   if (rDiff < 10 || rDiff > 350) {
-    const ha = 0.075 + (2000 - planet.radius)/2000 * 0.4;
+    const ha = 0.075 + ((2000 - planet.radius) / 2000) * 0.4;
     if (pressingKeys[37]) {
       if (distance <= 0) {
-        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle - ha, { x: 0, y: -character.height/2 });
+        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle - ha, { x: 0, y: -character.height / 2 });
         camera.x = x;
         camera.y = y;
       } else {
@@ -62,7 +63,7 @@ function updateOnPlanet() {
     }
     if (pressingKeys[39]) {
       if (distance <= 0) {
-        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle + ha, { x: 0, y: -character.height/2 });
+        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle + ha, { x: 0, y: -character.height / 2 });
         camera.x = x;
         camera.y = y;
       } else {

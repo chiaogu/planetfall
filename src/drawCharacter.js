@@ -1,5 +1,6 @@
-import { character, camera, pressingKeys } from './models';
+import { character, camera, pressingKeys, stage } from './models';
 import { transform, getDistanceToPlanetSurface, getAngle, isAccelerating, white } from './utils';
+import { STAGE_OVER } from './constants';
 
 const body = [
   [-9.6, -72.6],
@@ -50,7 +51,7 @@ const walkingBody = [
 const leftArm = [[-14.8, -71], [-9.8, -72], [-4.8, -69.2], [-11.2, -49], [-5.2, -32.2], [-9.2, -30.8], [-16, -44.6]];
 const rightArm = [[2.2, -72.8], [7.4, -73.4], [11, -70.4], [10.8, -47.6], [17.8, -35.6], [13.4, -32.8], [5.4, -48.2]];
 const eye = [[-1.4, -81.2], [1.6, -81], [1.6, -82.2], [-1.6, -82.2]];
-const leftLeg = [[-6.2, -37.8],[-4, -15],[-4, 3.2],[-2, 3.2],[0, -15],[3, -37.8]];
+const leftLeg = [[-6.2, -37.8], [-4, -15], [-4, 3.2], [-2, 3.2], [0, -15], [3, -37.8]];
 
 let frame = 0;
 let isFaceRight = true;
@@ -138,13 +139,15 @@ export default context => {
     }
   }
 
-  if (pressingKeys[37]) {
-    isFaceRight = false;
-  } else if (pressingKeys[39]) {
-    isFaceRight = true;
+  if (stage.code !== STAGE_OVER) {
+    if (pressingKeys[37]) {
+      isFaceRight = false;
+    } else if (pressingKeys[39]) {
+      isFaceRight = true;
+    }
   }
 
-  const isWalking = frame % 25 >= 13 && (pressingKeys[39] || pressingKeys[37]);
+  const isWalking = frame % 25 >= 13 && (pressingKeys[39] || pressingKeys[37]) && stage.code !== STAGE_OVER;
   const parts = [rightArm, ...(isWalking ? [leftLeg] : []), !isWalking ? body : walkingBody, leftArm, eye];
   parts.map((part, partIndex) => {
     if (partIndex === (!isWalking ? 3 : 4)) {

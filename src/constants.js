@@ -10,6 +10,9 @@ export const STAGE_GAME = 1;
 export const STAGE_ENDING = 2;
 export const STAGE_OVER = 3;
 
+export const OVER_REASON_CRASH = 0;
+export const OVER_REASON_RUNNING_OUT_OF_FUEL = 1;
+
 export const FONT = 'Courier New';
 
 export const CATLAX_DUNE_COLOR = ['#555', '#555', '#666', '#666'];
