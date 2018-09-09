@@ -1,12 +1,14 @@
-import { drawImage, transform, transformColorStops } from './utils';
+import { drawImageOnPlanet } from './utils';
+
+const height = 200;
+const width = 120;
+const windowSize = 5;
+const windowGap = 20;
 
 export default (context, transformOnPlanet, [azimuth, scale]) => {
-  const height = 200;
-  const width = 120;
-  const windowSize = 5;
-  const windowGap = 20;
-  drawImage(
+  drawImageOnPlanet(
     context,
+    transformOnPlanet,
     [
       {
         color: [0, -height, 1, 10, [[0, `#091A1E`], [0.6, `rgb(10,35,71)`], [1, `rgb(101,121,101)`]]],
@@ -31,12 +33,6 @@ export default (context, transformOnPlanet, [azimuth, scale]) => {
                   ]
           };
         })
-    ].map(({ color, paths, shadow }) => {
-      return {
-        shadow,
-        color: transformColorStops(color, transformOnPlanet),
-        paths: paths.map(([x, y]) => transformOnPlanet(x, y))
-      };
-    })
+    ]
   );
 };

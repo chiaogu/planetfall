@@ -1,4 +1,4 @@
-import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, STAGE_TITLE, STAGE_GAME } from './constants';
+import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, STAGE_TITLE, STAGE_GAME } from './constants';
 
 export const camera = {
   x: 0,
@@ -47,10 +47,11 @@ export const planets = [
     radius: 2000,
     gravity: 0.02,
     color: {
-      land: '#555',
-      atmosphere: [[0, '#ff0']]
+      land: '#2E284B',
+      atmosphere: [[0, '#FF9577'], [0.03, '#FF6D5B'], [0.2, '#50456E']]
     },
-    objects: [[180, OBJECT_SATELLITE_STATION, false]]
+    objects: [[90, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[15, 0, OBJECT_DUNE, 1, 0.9], [5, 13, OBJECT_DUNE, 0.5, 0.85], [7.5, 7, OBJECT_DUNE, 0.7, 0.8], [5, 4, OBJECT_DUNE, 0.4, 0.75]]
   }
 ];
 

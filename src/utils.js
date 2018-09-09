@@ -77,6 +77,14 @@ export function isAccelerating() {
   );
 }
 
+export function drawImageOnPlanet(context, transformOnPlanet, layers) {
+  drawImage(context, layers.map(({ color, paths, shadow }) => ({
+    shadow,
+    color: transformColorStops(color, transformOnPlanet),
+    paths: paths.map(([x, y]) => transformOnPlanet(x, y))
+  })))
+}
+
 export function drawImage(context, layers) {
   return layers.map(layer => {
     if(layer.shadow) {
