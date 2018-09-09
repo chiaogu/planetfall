@@ -1,4 +1,12 @@
-import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, OBJECT_CANYON, STAGE_TITLE, STAGE_GAME } from './constants';
+import {
+  OBJECT_SATELLITE_STATION,
+  OBJECT_BUILDING,
+  OBJECT_DUNE,
+  OBJECT_CANYON,
+  OBJECT_TREE,
+  STAGE_TITLE,
+  STAGE_GAME
+} from './constants';
 
 export const camera = {
   x: 0,
@@ -15,7 +23,7 @@ export const camera = {
 
 export const planets = [
   {
-    name: 'Nadium',
+    name: 'Aolea',
     x: 0,
     y: 2010,
     radius: 2000,
@@ -38,7 +46,7 @@ export const planets = [
       atmosphere: [[0, 'rgba(255,255,255,0.3)']]
     },
     objects: [[200, OBJECT_SATELLITE_STATION, false]],
-    bgs: [[30, 0, OBJECT_CANYON, 1, 0]]
+    bgs: [[120, 0, OBJECT_CANYON, 1, 0]]
   },
   {
     name: 'Kapbula',
@@ -52,6 +60,19 @@ export const planets = [
     },
     objects: [[90, OBJECT_SATELLITE_STATION, false]],
     bgs: [[15, 0, OBJECT_DUNE, 1, 0.9], [5, 13, OBJECT_DUNE, 0.5, 0.85], [7.5, 7, OBJECT_DUNE, 0.7, 0.8], [5, 4, OBJECT_DUNE, 0.4, 0.75]]
+  },
+  {
+    name: 'Nadium',
+    x: 12010,
+    y: 0,
+    radius: 2000,
+    gravity: 0.03,
+    color: {
+      land: '#112408',
+      atmosphere: [[0,'#29573A'], [0.05, '#C4D6A5'],[0.2, '#BBC87A']]
+    },
+    objects: [[0, OBJECT_SATELLITE_STATION, false]],
+    bgs: [[3, 4, OBJECT_TREE, 2, 0.5],[2, 0, OBJECT_TREE, 3, 0.35],[3, 4, OBJECT_TREE, 2.5, 0.3]]
   }
 ];
 

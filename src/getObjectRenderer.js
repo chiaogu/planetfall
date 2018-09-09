@@ -1,8 +1,9 @@
-import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, OBJECT_CANYON } from './constants';
+import { OBJECT_SATELLITE_STATION, OBJECT_BUILDING, OBJECT_DUNE, OBJECT_CANYON, OBJECT_TREE } from './constants';
 import drawSatelliteStation from './drawSatelliteStation';
 import drawBuilding from './drawBuilding';
 import drawDune from './drawDune';
 import drawCanyon from './drawCanyon';
+import drawTree from './drawTree';
 
 export default id => {
   switch (id) {
@@ -14,5 +15,7 @@ export default id => {
       return drawDune;
     case OBJECT_CANYON:
       return drawCanyon;
+    case OBJECT_TREE:
+      return drawTree;
   }
 };
