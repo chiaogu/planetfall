@@ -123,5 +123,5 @@ export const objectives = {
 export const radarWaves = [];
 
 export const stage = {
-  code: STAGE_GAME
+  code: STAGE_TITLE
 };

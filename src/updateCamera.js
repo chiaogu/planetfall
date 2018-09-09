@@ -1,5 +1,5 @@
-import { camera, pressingKeys } from './models';
-import { getAngle, getTheta, getDistanceToPlanetSurface } from './utils';
+import { camera, pressingKeys, character } from './models';
+import { getAngle, getTheta, getDistanceToPlanetSurface, getPositionOnPlanetSurface } from './utils';
 const A = 0.1;
 const AR = 0.03;
 
@@ -49,13 +49,26 @@ function updateOnPlanet() {
   }
 
   if (rDiff < 10 || rDiff > 350) {
+    const ha = 0.075 + (2000 - planet.radius)/2000 * 0.4;
     if (pressingKeys[37]) {
-      camera.vx -= 0.05 * Math.cos(gravityTheta);
-      camera.vy -= 0.05 * Math.sin(gravityTheta);
+      if (distance <= 0) {
+        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle - ha, { x: 0, y: -character.height/2 });
+        camera.x = x;
+        camera.y = y;
+      } else {
+        camera.vx -= 0.05 * Math.cos(gravityTheta);
+        camera.vy -= 0.05 * Math.sin(gravityTheta);
+      }
     }
     if (pressingKeys[39]) {
-      camera.vx += 0.05 * Math.cos(gravityTheta);
-      camera.vy += 0.05 * Math.sin(gravityTheta);
+      if (distance <= 0) {
+        const { x, y } = getPositionOnPlanetSurface(planet, gravityAngle + ha, { x: 0, y: -character.height/2 });
+        camera.x = x;
+        camera.y = y;
+      } else {
+        camera.vx += 0.05 * Math.cos(gravityTheta);
+        camera.vy += 0.05 * Math.sin(gravityTheta);
+      }
     }
   } else {
     if (pressingKeys[37]) {

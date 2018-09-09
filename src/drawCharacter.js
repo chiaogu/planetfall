@@ -27,9 +27,30 @@ const body = [
   [-6.2, -37.4],
   [-10.6, -72.2]
 ];
+const walkingBody = [
+  [-9.6, -72.6],
+  [-3.6, -75.4],
+  [-3.6, -82.8],
+  [-3, -84],
+  [-2.2, -84.4],
+  [-0.6, -84.8],
+  [0.8, -84.6],
+  [2, -83.2],
+  [2.4, -82],
+  [3.2, -75.2],
+  [6.6, -73.6],
+  [7.4, -40.6],
+  [6, -21.4],
+  [4.2, 2.6],
+  [2.6, 3.2],
+  [2.6, -16.8],
+  [-6.2, -37.4],
+  [-10.6, -72.2]
+];
 const leftArm = [[-14.8, -71], [-9.8, -72], [-4.8, -69.2], [-11.2, -49], [-5.2, -32.2], [-9.2, -30.8], [-16, -44.6]];
 const rightArm = [[2.2, -72.8], [7.4, -73.4], [11, -70.4], [10.8, -47.6], [17.8, -35.6], [13.4, -32.8], [5.4, -48.2]];
-const eye = [[-1.4,-81.2],[1.6,-81],[1.6,-82.2],[-1.6,-82.2]];
+const eye = [[-1.4, -81.2], [1.6, -81], [1.6, -82.2], [-1.6, -82.2]];
+const leftLeg = [[-6.2, -37.8],[-4, -15],[-4, 3.2],[-2, 3.2],[0, -15],[3, -37.8]];
 
 let frame = 0;
 let isFaceRight = true;
@@ -119,12 +140,14 @@ export default context => {
 
   if (pressingKeys[37]) {
     isFaceRight = false;
-  } else if(pressingKeys[39]) {
+  } else if (pressingKeys[39]) {
     isFaceRight = true;
   }
 
-  [rightArm, body, leftArm, eye].map((part, partIndex) => {
-    if(partIndex === 3) {
+  const isWalking = frame % 25 >= 13 && (pressingKeys[39] || pressingKeys[37]);
+  const parts = [rightArm, ...(isWalking ? [leftLeg] : []), !isWalking ? body : walkingBody, leftArm, eye];
+  parts.map((part, partIndex) => {
+    if (partIndex === (!isWalking ? 3 : 4)) {
       context.shadowColor = '#000';
       context.fillStyle = '#555';
       context.shadowBlur = 20;
