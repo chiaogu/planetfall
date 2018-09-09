@@ -56,7 +56,7 @@ export default context => {
     stage.reason = OVER_REASON_RUNNING_OUT_OF_FUEL;
   }
 
-  if(stage.code === STAGE_OVER && camera.fuel > 0) {
+  if(stage.code === STAGE_OVER && stage.reason === OVER_REASON_RUNNING_OUT_OF_FUEL && camera.fuel > 0) {
     stage.code = STAGE_GAME;
   }
 };
