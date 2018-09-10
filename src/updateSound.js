@@ -2,6 +2,7 @@ import { isAccelerating } from './utils';
 import { camera, pressingKeys, radarWaves } from './models';
 import { getDistanceToPlanetSurface, isNearStaelliteStation } from './utils';
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 
 const whiteNoise = audioContext.createBufferSource();
@@ -51,10 +52,10 @@ export default () => {
   const echoWave = radarWaves.find(wave => !wave.send);
   const isEchoArrived = echoWave && echoWave.r > Math.hypot(camera.x - echoWave.x, camera.y - echoWave.y);
 
-  if(pressingKeys[32]) {
+  if (pressingKeys[32]) {
     radar.frequency.setValueAtTime(1046, audioContext.currentTime);
-  } else if(isEchoArrived) {
-    radar.frequency.setValueAtTime(440 + Math.max(0, 440 - echoWave.r / 4000 * 440), audioContext.currentTime);
+  } else if (isEchoArrived) {
+    radar.frequency.setValueAtTime(440 + Math.max(0, 440 - (echoWave.r / 4000) * 440), audioContext.currentTime);
   }
 
   if ((pressingKeys[32] && !isNearStaelliteStation()) || isEchoArrived) {

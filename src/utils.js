@@ -43,7 +43,7 @@ export function getPositionOnPlanetSurface(planet, azimuth, point) {
     x: planet.x + planet.radius * Math.cos(anchorTheta),
     y: planet.y + planet.radius * Math.sin(anchorTheta)
   };
-  if(!point) {
+  if (!point) {
     return anchorPosition;
   }
 
@@ -79,21 +79,24 @@ export function isAccelerating() {
 }
 
 export function drawImageOnPlanet(context, transformOnPlanet, layers) {
-  drawImage(context, layers.map(({ color, paths, shadow }) => ({
-    shadow,
-    color: transformColorStops(color, transformOnPlanet),
-    paths: paths.map(([x, y]) => transformOnPlanet(x, y))
-  })))
+  drawImage(
+    context,
+    layers.map(({ color, paths, shadow }) => ({
+      shadow,
+      color: transformColorStops(color, transformOnPlanet),
+      paths: paths.map(([x, y]) => transformOnPlanet(x, y))
+    }))
+  );
 }
 
 export function drawImage(context, layers) {
   return layers.map(layer => {
-    if(layer.shadow) {
+    if (layer.shadow) {
       context.shadowColor = layer.shadow[0];
       context.shadowBlur = layer.shadow[1];
     }
     context.beginPath();
-    layer.paths.map(({x, y}, index) => {
+    layer.paths.map(({ x, y }, index) => {
       if (index === 0) {
         context.moveTo(x, y);
       } else {
@@ -107,8 +110,8 @@ export function drawImage(context, layers) {
   });
 }
 
-export function getLinearGradient(context, x1, y1, x2,y2, stops) {
-  const gradient = context.createLinearGradient(x1,y1,x2,y2);
+export function getLinearGradient(context, x1, y1, x2, y2, stops) {
+  const gradient = context.createLinearGradient(x1, y1, x2, y2);
   stops.map(args => gradient.addColorStop(...args));
   return gradient;
 }
@@ -125,5 +128,24 @@ export function isNearStaelliteStation() {
     return distance < 20;
   } else {
     return false;
+  }
+}
+
+export function mapTouchEventToKeyCode({ touches }) {
+  if (!touches || touches.length === 0) return;
+  const [{ clientX, clientY }] = touches;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const size = width / 3;
+  if (clientX < size && clientY > height - size) {
+    return 37;
+  } else if (clientX > size && clientX < size * 2 && clientY > height - size) {
+    return 40;
+  } else if (clientX > size && clientX < size * 2 && clientY > height - size * 2 && clientY < height - size) {
+    return 38;
+  } else if (clientX > size * 2 && clientY > height - size) {
+    return 39;
+  }else {
+    return 32;
   }
 }
