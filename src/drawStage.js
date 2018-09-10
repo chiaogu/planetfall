@@ -158,7 +158,7 @@ function drawTitle(context) {
   context.fillStyle = '#fff';
 
   context.font = `72px ${FONT}`;
-  context.fillText('G R A V I T Y', window.innerWidth / 2, window.innerHeight * 0.167);
+  context.fillText('P L A N E T F A L L', window.innerWidth / 2, window.innerHeight * 0.167);
 
   context.font = `24px ${FONT}`;
   context.fillText('[Space] Start', window.innerWidth / 2, window.innerHeight * 0.84);
@@ -180,9 +180,9 @@ function drawEnding(context) {
   context.fillText(`You saved the entire system in`, window.innerWidth / 2, window.innerHeight / 6);
 
   context.font = `48px ${FONT}`;
-  const timeText = [time / 3600000, time / 60000, time / 1000].map(t => t.toFixed().padStart(2, '0')).join(':');
+  const timeText = [time / 3600000, time % 3600000 / 60000, time % 3600000 % 60000 / 1000].map(t => t.toFixed().padStart(2, '0')).join(':');
   context.fillText(
-    `${timeText}.${`${time % 1000}`.padStart(3, '0')}`,
+    timeText,
     window.innerWidth / 2,
     window.innerHeight / 6 + 64
   );
