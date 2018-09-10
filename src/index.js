@@ -7,19 +7,13 @@ import drawStars from './drawStars';
 import drawDashboard from './drawDashboard';
 import drawRadar from './drawRadar';
 import drawStage from './drawStage';
-import {keyDown, keyUp, updateSound} from './renderSound'
+import updateSound from './updateSound'
 
 const canvas = document.querySelector('canvas');
 const context = canvas.getContext('2d');
 
-window.addEventListener('keydown', ({ keyCode }) => {
-  pressingKeys[keyCode] = true;
-  keyDown(keyCode);
-});
-window.addEventListener('keyup', ({ keyCode }) => {
-  delete pressingKeys[keyCode];
-  keyUp(keyCode);
-});
+window.addEventListener('keydown', ({ keyCode }) => pressingKeys[keyCode] = true);
+window.addEventListener('keyup', ({ keyCode }) => delete pressingKeys[keyCode]);
 
 function tick() {
   canvas.width = window.innerWidth;

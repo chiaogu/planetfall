@@ -1,11 +1,11 @@
 import { camera, radarWaves, pressingKeys, planets, objectives } from './models';
-import { transform, getPositionOnPlanetSurface, white } from './utils';
+import { transform, getPositionOnPlanetSurface, white, isNearStaelliteStation } from './utils';
 import { OBJECT_SATELLITE_STATION } from './constants';
 
 let isPressed = false;
 
 export default context => {
-  if (pressingKeys[32]) {
+  if (pressingKeys[32] && !isNearStaelliteStation()) {
     if (!isPressed) {
       isPressed = true;
       radarWaves.push({

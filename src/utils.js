@@ -1,4 +1,5 @@
-import { camera, character, pressingKeys } from './models';
+import { camera, character, pressingKeys, objectives } from './models';
+import { OBJECT_SATELLITE_STATION } from './constants';
 
 export function transform(value, zoomRation = 1) {
   if (typeof value === 'object') {
@@ -114,4 +115,15 @@ export function getLinearGradient(context, x1, y1, x2,y2, stops) {
 
 export function white(alpha) {
   return `rgba(255,255,255,${alpha})`;
+}
+
+export function isNearStaelliteStation() {
+  if (camera.planet) {
+    const satelliteStation = camera.planet.objects.find(object => object[1] === OBJECT_SATELLITE_STATION);
+    const satelliteStationPosition = getPositionOnPlanetSurface(camera.planet, satelliteStation[0]);
+    const distance = Math.hypot(camera.x - satelliteStationPosition.x, camera.y - satelliteStationPosition.y);
+    return distance < 20;
+  } else {
+    return false;
+  }
 }
