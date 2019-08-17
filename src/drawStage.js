@@ -40,6 +40,7 @@ export default context => {
 
   if (stage.code === STAGE_TITLE && pressingKeys[32]) {
     stage.startTime = Date.now();
+    window.audioContext.resume();
     stage.code = STAGE_GAME;
   } else if (
     stage.code === STAGE_GAME &&

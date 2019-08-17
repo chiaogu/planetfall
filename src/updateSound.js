@@ -4,6 +4,8 @@ import { getDistanceToPlanetSurface, isNearStaelliteStation } from './utils';
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
+// AudioContext must be resumed after the document received a user gesture to enable audio playback.
+window.audioContext = audioContext;
 
 const whiteNoise = audioContext.createBufferSource();
 whiteNoise.buffer = noise();
