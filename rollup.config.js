@@ -1,18 +1,17 @@
-import copy from 'rollup-plugin-copy';
+import html from '@rollup/plugin-html';
 import browsersync from 'rollup-plugin-browsersync';
 import minify from 'rollup-plugin-babel-minify';
+import template from './template.js';
 
 export default ({ watch }) => ({
   input: 'src/index.js',
   output: {
-    file: 'dist/b.js',
+    file: 'dist/index.js',
     format: 'iife'
   },
   plugins: [
-    copy({
-      'src/index.html': 'dist/index.html'
-    }),
     minify(),
+    html({ template }),
     watch
       ? browsersync({
           server: 'dist',
