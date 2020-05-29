@@ -4,7 +4,6 @@
 In 2018, I participated in [js13kGames](https://js13kgames.com/), a game dev competition with a file size limit of 13kb.  My entry [Planetfall](https://js13kgames.com/entries/planetfall) is a space exploration game. The goal is to find satellite stations on each planet and take them offline.
 
 You can play it here https://chiaogu.github.io/planetfall/  
-or watch the gameplay video here https://chiaogu.github.io/planetfall/
 
 ## Concept
 ![](docs/monolith.gif)
